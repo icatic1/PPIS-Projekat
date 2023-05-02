@@ -14,6 +14,9 @@ public class Department {
     @Column(name = "name",unique = true, columnDefinition = "VARCHAR(60)")
     private String name;
 
+    public Department() {
+    }
+
     public Department(String name) {
         this.name = name;
     }

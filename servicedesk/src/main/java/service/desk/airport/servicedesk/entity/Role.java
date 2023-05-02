@@ -13,6 +13,9 @@ public class Role {
     @Column(name = "name",unique = true, columnDefinition = "VARCHAR(60)")
     private String name;
 
+    public Role() {
+    }
+
     public Role(String name) {
         this.name = name;
     }

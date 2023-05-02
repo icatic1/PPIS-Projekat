@@ -40,6 +40,8 @@ public class ServicedeskApplication implements CommandLineRunner {
 	}
 	private void cleanup() {
 		userRepository.deleteAll();
+		departmentRepository.deleteAll();
+		roleRepository.deleteAll();
 	}
 
 	private void startingData() {
