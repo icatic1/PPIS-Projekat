@@ -7,8 +7,8 @@ import {
   Link,
 } from "@mui/material";
 import React, { useState } from "react";
-import setBodyColor from "../functions/setBodyColor";
-import logo from "../images/logo.png";
+import setBodyColor from "../../functions/setBodyColor";
+import logo from "../../images/logo.png";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -16,8 +16,9 @@ import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
+import {useLocalState} from "../../util/useLocalState";
 
-const Login = () => {
+const Login = ({user,setUser}) => {
   const paperStyle = {
     padding: 20,
     height: 300,
@@ -47,12 +48,37 @@ const Login = () => {
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
+  const [jwt,setJwt] = useLocalState("","jwt");
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("email: " + email);
-    console.log("password: " + password);
+    const reqBody = {
+      email: email,
+      password: password
+    }
+
+    fetch("auth/login", {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "post",
+      body: JSON.stringify(reqBody)
+    }).then((res) => {
+      if(res.status === 200) 
+          return res.json();
+      else
+        return Promise.reject("Invalid login attempt");
+    }).then(res=>{
+      setJwt(res.token);
+      setUser({firstname:res.firstName,lastname:res.lastName,email:res.email,role:res.role,department:res.department});
+      window.location.href="/"
+    }).catch((message) =>{
+      alert(message);
+    });
+
   };
+
 
   return (
     <div>
