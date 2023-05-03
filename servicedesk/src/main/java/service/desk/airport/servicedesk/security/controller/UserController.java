@@ -1,11 +1,11 @@
-package service.desk.airport.servicedesk.controller;
+package service.desk.airport.servicedesk.security.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import service.desk.airport.servicedesk.dao.UserRepository;
-import service.desk.airport.servicedesk.entity.Department;
-import service.desk.airport.servicedesk.entity.Role;
-import service.desk.airport.servicedesk.entity.User;
+import service.desk.airport.servicedesk.security.dao.UserRepository;
+import service.desk.airport.servicedesk.security.entity.Department;
+import service.desk.airport.servicedesk.security.entity.Role;
+import service.desk.airport.servicedesk.security.entity.User;
 
 @Controller
 @RequestMapping(path="/user")
@@ -14,7 +14,7 @@ public class UserController {
 
     @PostMapping(path="/add")
     public @ResponseBody
-    String addNewUser (@RequestParam String firstname, @RequestParam String lastname, @RequestParam String email,@RequestParam String password, @RequestParam Department department, @RequestParam Role role) {
+    String addNewUser (@RequestParam String firstname, @RequestParam String lastname, @RequestParam String email, @RequestParam String password, @RequestParam Department department, @RequestParam Role role) {
         User newuser = new User(firstname, lastname, email, password, department, role);
         userRepository.save(newuser);
         return "Added user";

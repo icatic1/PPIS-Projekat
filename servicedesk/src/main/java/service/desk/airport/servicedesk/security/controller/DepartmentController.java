@@ -1,9 +1,9 @@
-package service.desk.airport.servicedesk.controller;
+package service.desk.airport.servicedesk.security.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import service.desk.airport.servicedesk.dao.DepartmentRepository;
-import service.desk.airport.servicedesk.entity.Department;
+import service.desk.airport.servicedesk.security.dao.DepartmentRepository;
+import service.desk.airport.servicedesk.security.entity.Department;
 
 
 @Controller

@@ -1,11 +1,10 @@
-package service.desk.airport.servicedesk.entity;
+package service.desk.airport.servicedesk.security.entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "department")
-public class Department {
-
+@Table(name = "role")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -14,10 +13,10 @@ public class Department {
     @Column(name = "name",unique = true, columnDefinition = "VARCHAR(60)")
     private String name;
 
-    public Department() {
+    public Role() {
     }
 
-    public Department(String name) {
+    public Role(String name) {
         this.name = name;
     }
 

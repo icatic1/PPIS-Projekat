@@ -1,10 +1,10 @@
-package service.desk.airport.servicedesk.authorization;
+package service.desk.airport.servicedesk.security.authorization;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import service.desk.airport.servicedesk.entity.Role;
-import service.desk.airport.servicedesk.entity.User;
+import service.desk.airport.servicedesk.security.entity.Role;
+import service.desk.airport.servicedesk.security.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

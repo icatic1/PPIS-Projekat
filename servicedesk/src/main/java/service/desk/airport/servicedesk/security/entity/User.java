@@ -1,8 +1,11 @@
-package service.desk.airport.servicedesk.entity;
+package service.desk.airport.servicedesk.security.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import service.desk.airport.servicedesk.security.token.Token;
+
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -34,6 +37,9 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Token> userTokens;
+
     public User() {
     }
 
@@ -44,6 +50,14 @@ public class User {
         this.password = password;
         this.department = department;
         this.role = role;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstname() {
@@ -92,5 +106,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Token> getUserTokens() {
+        return userTokens;
+    }
+
+    public void setUserTokens(List<Token> userTokens) {
+        this.userTokens = userTokens;
     }
 }
