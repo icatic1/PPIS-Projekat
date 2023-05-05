@@ -9,17 +9,18 @@ function App() {
   const [user,setUser] = useState();
 
 
-
   return (
     <div>
     <Routes>
       <Route
         path="/"
-        element= {<PrivateRoute user={user}><Home user={user}></Home></PrivateRoute>}
-      />
+        element= {<PrivateRoute />}
+      >
+        <Route path="/" element={<Home ></Home>}></Route>
+        </Route>
       <Route
         path="/login"
-        element= {<Login user={user} setUser={setUser}></Login>}
+        element= {<Login></Login>}
       />
     </Routes>
     </div>
