@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
-import service.desk.airport.servicedesk.security.authorization.AirportUserDetails;
 import service.desk.airport.servicedesk.security.dao.DepartmentRepository;
 import service.desk.airport.servicedesk.security.dao.RoleRepository;
 import service.desk.airport.servicedesk.security.dao.UserRepository;
@@ -83,8 +82,8 @@ public class AuthenticationService {
         var savedUser = userRepository.save(user);
         Map<String,Object> roleMap= new HashMap<>();
         roleMap.put("Role",role.getName());
-        var jwtToken = jwtService.generateToken(roleMap,new AirportUserDetails(user));
-        var refreshToken = jwtService.generateRefreshToken(roleMap, new AirportUserDetails(user));
+        var jwtToken = jwtService.generateToken(roleMap,user);
+        var refreshToken = jwtService.generateRefreshToken(roleMap, user);
         saveToken(savedUser, jwtToken);
         return  new AuthResponse(jwtToken,refreshToken,savedUser);
     }
@@ -102,8 +101,8 @@ public class AuthenticationService {
         var role = user.getRole();
         Map<String,Object> roleMap= new HashMap<>();
         roleMap.put("Role",role.getName());
-        var jwtToken = jwtService.generateToken(roleMap,new AirportUserDetails(user));
-        var refreshToken = jwtService.generateRefreshToken(roleMap, new AirportUserDetails(user));
+        var jwtToken = jwtService.generateToken(roleMap,user);
+        var refreshToken = jwtService.generateRefreshToken(roleMap,user);
         revokeAllUserTokens(user);
         saveToken(user, jwtToken);
         return  new AuthResponse(jwtToken,refreshToken,user);
@@ -132,15 +131,15 @@ public class AuthenticationService {
         userEmail = jwtService.extractUsername(refreshToken);
 
         if(userEmail!=null) {
-            var userDetails = new AirportUserDetails(this.userRepository.findByEmail(userEmail).orElseThrow());
-            var role = userDetails.getUser().getRole();
+            var userDetails = this.userRepository.findByEmail(userEmail).orElseThrow();
+            var role = userDetails.getRole();
             Map<String,Object> roleMap= new HashMap<>();
             roleMap.put("Role",role.getName());
             if(jwtService.isTokenValid(refreshToken,userDetails)) {
                 var accessToken = jwtService.generateToken(roleMap,userDetails);
-                revokeAllUserTokens(userDetails.getUser());
-                saveToken(userDetails.getUser(), accessToken);
-                var authResponse = new AuthResponse(accessToken,refreshToken,userDetails.getUser());
+                revokeAllUserTokens(userDetails);
+                saveToken(userDetails, accessToken);
+                var authResponse = new AuthResponse(accessToken,refreshToken,userDetails);
                 return authResponse;
             }
         }

@@ -14,8 +14,8 @@ import service.desk.airport.servicedesk.security.entity.Role;
 import service.desk.airport.servicedesk.security.entity.User;
 import service.desk.airport.servicedesk.security.token.TokenRepository;
 
-@EnableJpaRepositories(basePackages = { "service.desk.airport.servicedesk.security.dao","service.desk.airport.servicedesk.security.token"})
-@EntityScan(basePackages = {"service.desk.airport.servicedesk.security.entity","service.desk.airport.servicedesk.security.token"})
+@EnableJpaRepositories(basePackages = { "service.desk.airport.servicedesk.dao","service.desk.airport.servicedesk.security.dao","service.desk.airport.servicedesk.security.token"})
+@EntityScan(basePackages = {"service.desk.airport.servicedesk.entity","service.desk.airport.servicedesk.security.entity","service.desk.airport.servicedesk.security.token"})
 @SpringBootApplication//(exclude = {DataSourceAutoConfiguration.class })
 public class ServicedeskApplication implements CommandLineRunner {
 
