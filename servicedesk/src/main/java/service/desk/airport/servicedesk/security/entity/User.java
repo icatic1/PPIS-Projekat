@@ -125,7 +125,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() { // po potrebi se moze razviti da ima vise roles jedan user i onda se lista siri
         Role role = getRole();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.getName()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));
         return authorities;
     }
 

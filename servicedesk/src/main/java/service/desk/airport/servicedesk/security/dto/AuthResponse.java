@@ -8,6 +8,7 @@ public class AuthResponse {
     private String accessToken;
     @JsonProperty("refreshToken")
     private String refreshToken;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
@@ -20,11 +21,20 @@ public class AuthResponse {
     public AuthResponse(String accessToken, String refreshToken, User user) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.id=user.getId();
         this.firstName = user.getFirstname();
         this.lastName = user.getLastname();
         this.role = user.getRole().getName();
         this.department = user.getDepartment().getName();
         this.email= user.getEmail();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getAccessToken() {
