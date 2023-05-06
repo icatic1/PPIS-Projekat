@@ -18,8 +18,6 @@ import static org.springframework.security.authorization.AuthorityAuthorizationM
 @RestController
 @RequestMapping(path="/ticket")
 public class TicketController {
-    public final static String USER = "sd_user";
-    public  final static  String AGENT = "sd_agent";
     @Autowired
     private TicketService ticketService;
 

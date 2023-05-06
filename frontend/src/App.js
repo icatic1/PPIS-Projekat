@@ -4,10 +4,10 @@ import Home from "./components/shared/home";
 import PrivateRoute from "./components/shared/privateroute";
 import {Routes,Route} from "react-router-dom";
 import { useState } from "react";
+import CreateTicket from "./components/user/ticket-create/CreateTicket";
+import TicketOverview from "./components/user/ticket-overview/TicketOverview"
 
 function App() {
-  const [user,setUser] = useState();
-
 
   return (
     <div>
@@ -17,6 +17,8 @@ function App() {
         element= {<PrivateRoute />}
       >
         <Route path="/" element={<Home ></Home>}></Route>
+        <Route path="/create-ticket" element={<CreateTicket ></CreateTicket>}></Route>
+        <Route path="/ticket/:id" element={<TicketOverview></TicketOverview>}></Route>
         </Route>
       <Route
         path="/login"
