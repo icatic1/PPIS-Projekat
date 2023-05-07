@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import service.desk.airport.servicedesk.dao.TicketRepository;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
+import service.desk.airport.servicedesk.dto.ticketcomment.TicketCommentResponse;
 import service.desk.airport.servicedesk.entity.Ticket;
 import service.desk.airport.servicedesk.enums.Category;
 import service.desk.airport.servicedesk.enums.PriorityLevel;
@@ -16,6 +17,7 @@ import service.desk.airport.servicedesk.security.dao.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketService {
@@ -42,6 +44,31 @@ public class TicketService {
         ticketRepository.save(ticket);
 
         return new TicketResponse(ticket);
-
     }
+
+    public List<TicketResponse>  getActiveTicketsForUser(Integer userId) {
+        return ticketRepository
+                .findActiveTicketsByUserId(userId)
+                .stream()
+                .map(t -> new TicketResponse(t))
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse>  getProcessedTicketsForUser(Integer userId) {
+        return ticketRepository
+                .findProcessedTicketsByUserId(userId)
+                .stream()
+                .map(t -> new TicketResponse(t))
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse>  getOtherTicketsForUser(Integer userId) {
+        return ticketRepository
+                .findOtherActiveTicketsByUserId(userId)
+                .stream()
+                .map(t -> new TicketResponse(t))
+                .collect(Collectors.toList());
+    }
+
+
 }

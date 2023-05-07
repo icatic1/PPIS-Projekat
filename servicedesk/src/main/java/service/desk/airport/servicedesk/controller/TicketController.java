@@ -8,8 +8,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
+import service.desk.airport.servicedesk.dto.ticketcomment.TicketCommentResponse;
 import service.desk.airport.servicedesk.security.service.JwtService;
 import service.desk.airport.servicedesk.service.TicketService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/ticket")
@@ -43,4 +46,26 @@ public class TicketController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/active/user/{id}")
+    public ResponseEntity<List<TicketResponse>> getActiveTicketsForUser(
+            @PathVariable("id") Integer userId
+    ) {
+        return ResponseEntity.ok(ticketService.getActiveTicketsForUser(userId));
+    }
+
+    @GetMapping("/processed/user/{id}")
+    public ResponseEntity<List<TicketResponse>> getProcessedTicketsForUser(
+            @PathVariable("id") Integer userId
+    ) {
+        return ResponseEntity.ok(ticketService.getProcessedTicketsForUser(userId));
+    }
+
+    @GetMapping("/others/user/{id}")
+    public ResponseEntity<List<TicketResponse>> getOtherTicketsForUser(
+            @PathVariable("id") Integer userId
+    ) {
+        return ResponseEntity.ok(ticketService.getOtherTicketsForUser(userId));
+    }
+
 }
