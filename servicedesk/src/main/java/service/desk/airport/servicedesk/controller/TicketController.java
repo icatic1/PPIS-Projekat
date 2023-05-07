@@ -7,9 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
+import service.desk.airport.servicedesk.dto.ticket.TicketFilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
-import service.desk.airport.servicedesk.dto.ticketcomment.TicketCommentResponse;
-import service.desk.airport.servicedesk.enums.TicketStatus;
 import service.desk.airport.servicedesk.security.service.JwtService;
 import service.desk.airport.servicedesk.service.TicketService;
 
@@ -103,4 +102,22 @@ public class TicketController {
 
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<TicketResponse>> getAllTickets() {
+        try {
+            return ResponseEntity.ok(ticketService.getAllTickets());
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<TicketResponse>> getFilteredTickets(
+            @RequestBody TicketFilterRequest request){
+        try {
+            return ResponseEntity.ok(ticketService.filteredSortedTickets(request));
+        } catch (Exception e) {
+            return new  ResponseEntity<List<TicketResponse>>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

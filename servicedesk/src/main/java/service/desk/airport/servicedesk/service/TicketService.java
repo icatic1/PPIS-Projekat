@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import service.desk.airport.servicedesk.dao.TicketRepository;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
+import service.desk.airport.servicedesk.dto.ticket.TicketFilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
 import service.desk.airport.servicedesk.dto.ticketcomment.TicketCommentResponse;
 import service.desk.airport.servicedesk.entity.Ticket;
@@ -17,6 +18,8 @@ import service.desk.airport.servicedesk.enums.TicketTag;
 import service.desk.airport.servicedesk.security.dao.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,7 +32,6 @@ public class TicketService {
     UserRepository userRepository;
 
     public Ticket getTicket(Integer ticketId) {
-
         return ticketRepository.findById(ticketId).orElseThrow();
     }
 
@@ -98,5 +100,41 @@ public class TicketService {
         ticketRepository.save(ticket);
         return  new TicketResponse(ticket);
     }
+    public List<TicketResponse> filteredSortedTickets(TicketFilterRequest ticketFilterRequest) {
+        System.out.println("Usao u rutu");
+        List<Ticket> tickets;
+        if (ticketFilterRequest.getUserId() == null){
+            tickets = ticketRepository.findAll().stream().filter(ticket -> ticket.getStatus().equals(TicketStatus.ACTIVE)).toList();
+        }
+        else {
+            tickets = ticketRepository.findAll().stream().filter(ticket -> ticket.getAssignedTo().getId().equals(ticketFilterRequest.getUserId())).toList();
+        }
+            switch (ticketFilterRequest.getFilterType()){
+                case "category":
+                    tickets = tickets.stream().filter(ticket -> ticket.getCategory().equals(ticketFilterRequest.getCategory())).toList();
+                    break;
+                case "tag":
+                    //tickets = tickets.stream().filter(ticket -> ticket.getCategory().equals(ticketFilterRequest.getCategory())).toList();
+                    break;
+                case "priority":
+                    tickets = tickets.stream().filter(ticket -> ticket.getPriorityLevel().equals(ticketFilterRequest.getPriorityLevel())).toList();
+                    break;
+                default:
+                    break;
+            }
+        List<TicketResponse> responses = new ArrayList<>();
+        tickets.forEach(ticket -> responses.add(new TicketResponse(ticket)));
 
+        if (ticketFilterRequest.getSort().startsWith("d") || ticketFilterRequest.getSort().startsWith("D") )
+            responses.sort(Collections.reverseOrder());
+
+        return responses;
+
+    }
+    public List<TicketResponse> getAllTickets() {
+        List<Ticket> tickets = ticketRepository.findAll();
+        List<TicketResponse> responses = new ArrayList<>();
+        tickets.forEach(ticket -> responses.add(new TicketResponse(ticket)));
+        return responses;
+    }
 }
