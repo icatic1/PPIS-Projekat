@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
 import service.desk.airport.servicedesk.dto.ticketcomment.TicketCommentResponse;
+import service.desk.airport.servicedesk.enums.TicketStatus;
 import service.desk.airport.servicedesk.security.service.JwtService;
 import service.desk.airport.servicedesk.service.TicketService;
 
@@ -66,6 +67,40 @@ public class TicketController {
             @PathVariable("id") Integer userId
     ) {
         return ResponseEntity.ok(ticketService.getOtherTicketsForUser(userId));
+    }
+
+    @PreAuthorize("hasRole('sd_user')")
+    @PostMapping("/assign/{id}")
+    public ResponseEntity<TicketResponse> assignTicket(
+            @PathVariable("id") Integer ticketId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        try {
+            var userEmail = jwtService.extractUsername(token.substring(7));
+            return ResponseEntity.ok(ticketService.assignTicket(userEmail, ticketId));
+        } catch (Exception e) {
+            return new  ResponseEntity<TicketResponse>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('sd_user')")
+    @PostMapping("/verify/{id}")
+    public ResponseEntity<TicketResponse> verifyTicket(
+            @PathVariable("id") Integer ticketId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        try {
+            return ResponseEntity.ok(ticketService.verifyTicket(ticketId));
+        } catch (Exception e) {
+            return new  ResponseEntity<TicketResponse>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('sd_user')")
+    @PostMapping("/close/{id}")
+    public ResponseEntity<TicketResponse> closeTicket(
+            @PathVariable("id") Integer ticketId) {
+
+            return ResponseEntity.ok(ticketService.closeTicket(ticketId));
+
     }
 
 }

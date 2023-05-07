@@ -1,8 +1,10 @@
 package service.desk.airport.servicedesk.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import service.desk.airport.servicedesk.dao.TicketRepository;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
@@ -70,5 +72,31 @@ public class TicketService {
                 .collect(Collectors.toList());
     }
 
+
+    public TicketResponse assignTicket( String userEmail, Integer ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        ticket.setStatus(TicketStatus.ASSIGNED);
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        ticket.setAssignedTo(user);
+        ticketRepository.save(ticket);
+        return  new TicketResponse(ticket);
+    }
+
+    public TicketResponse verifyTicket( Integer ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        ticket.setStatus(TicketStatus.VERIFIED);
+        ticketRepository.save(ticket);
+        return  new TicketResponse(ticket);
+    }
+    public TicketResponse closeTicket( Integer ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if (ticket.getStatus() != TicketStatus.VERIFIED){
+            var exception = new EntityNotFoundException("Closing a ticket is only possible if its status is VERIFIED");
+            throw exception;
+        }
+        ticket.setStatus(TicketStatus.CLOSED);
+        ticketRepository.save(ticket);
+        return  new TicketResponse(ticket);
+    }
 
 }
