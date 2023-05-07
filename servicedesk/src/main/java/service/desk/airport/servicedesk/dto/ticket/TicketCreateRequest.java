@@ -1,16 +1,5 @@
 package service.desk.airport.servicedesk.dto.ticket;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import service.desk.airport.servicedesk.enums.Category;
-import service.desk.airport.servicedesk.enums.PriorityLevel;
-import service.desk.airport.servicedesk.enums.TicketStatus;
-import service.desk.airport.servicedesk.enums.TicketTag;
-import service.desk.airport.servicedesk.security.entity.User;
-
-import java.time.LocalDateTime;
-
 public class TicketCreateRequest {
 
     private String title;
@@ -23,15 +12,15 @@ public class TicketCreateRequest {
 
     private String tag;
 
-    private Integer userId;
+    private String userEmail;
 
-    public TicketCreateRequest(String title, String description, String priorityLevel, String category, String tag, Integer userId) {
+    public TicketCreateRequest(String title, String description, String priorityLevel, String category, String tag, String userEmail) {
         this.title = title;
         this.description = description;
         this.priorityLevel = priorityLevel;
         this.category = category;
         this.tag = tag;
-        this.userId = userId;
+        this.userEmail = userEmail;
     }
 
     public TicketCreateRequest() {
@@ -77,11 +66,11 @@ public class TicketCreateRequest {
         this.tag = tag;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

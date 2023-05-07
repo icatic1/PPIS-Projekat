@@ -25,11 +25,12 @@ public class TicketService {
     UserRepository userRepository;
 
     public Ticket getTicket(Integer ticketId) {
-        return null;
+
+        return ticketRepository.findById(ticketId).orElseThrow();
     }
 
     public TicketResponse createTicket(TicketCreateRequest request) {
-        var user = userRepository.findById(request.getUserId()).orElseThrow();
+        var user = userRepository.findByEmail(request.getUserEmail()).orElseThrow();
         var tag = TicketTag.valueOf(request.getTag());
         var priority = PriorityLevel.valueOf(request.getPriorityLevel());
         var category = Category.valueOf(request.getCategory());
