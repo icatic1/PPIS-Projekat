@@ -8,6 +8,7 @@ import service.desk.airport.servicedesk.enums.TicketTag;
 import service.desk.airport.servicedesk.security.dto.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TicketResponse {
     private Integer id;
@@ -30,6 +31,8 @@ public class TicketResponse {
 
     private UserResponse createdBy;
 
+    private List<Ticket> relatedTickets;
+
 
     public TicketResponse(Ticket t) {
 
@@ -42,6 +45,7 @@ public class TicketResponse {
         this.category = t.getCategory();
         this.tag = t.getTag();
         this.date = t.getDate();
+        this.relatedTickets = t.getRelatedTickets();
 
         this.createdBy =  new UserResponse(t.getCreatedBy());
         if(t.getAssignedTo()!=null)
@@ -138,5 +142,13 @@ public class TicketResponse {
 
     public void setCreatedBy(UserResponse createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public List<Ticket> getRelatedTickets() {
+        return relatedTickets;
+    }
+
+    public void setRelatedTickets(List<Ticket> relatedTickets) {
+        this.relatedTickets = relatedTickets;
     }
 }

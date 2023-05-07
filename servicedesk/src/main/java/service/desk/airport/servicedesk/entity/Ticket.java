@@ -1,5 +1,9 @@
 package service.desk.airport.servicedesk.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import service.desk.airport.servicedesk.enums.Category;
 import service.desk.airport.servicedesk.enums.PriorityLevel;
@@ -8,6 +12,7 @@ import service.desk.airport.servicedesk.enums.TicketTag;
 import service.desk.airport.servicedesk.security.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ticket")
@@ -49,6 +54,22 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name="related_tickets",
+            joinColumns=@JoinColumn(name="ticketId"),
+            inverseJoinColumns=@JoinColumn(name="relatedTicketId")
+    )
+    private List<Ticket> relatedTickets;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name="related_tickets",
+            joinColumns=@JoinColumn(name="relatedTicketId"),
+            inverseJoinColumns=@JoinColumn(name="ticketId")
+    )
+    private List<Ticket> relatedTo;
 
     public Ticket() {
     }
@@ -178,5 +199,26 @@ public class Ticket {
 
     public void setAssignedTo(User assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public List<Ticket> getRelatedTickets() {
+        return relatedTickets;
+    }
+
+    public void setRelatedTickets(List<Ticket> relatedTickets) {
+        this.relatedTickets = relatedTickets;
+    }
+
+    @JsonIgnore
+    public List<Ticket> getRelatedTo() {
+        return relatedTo;
+    }
+
+    public void setRelatedTo(List<Ticket> relatedTo) {
+        this.relatedTo = relatedTo;
+    }
+
+    public void addRelatedTicket(Ticket t) {
+        this.relatedTickets.add(t);
     }
 }

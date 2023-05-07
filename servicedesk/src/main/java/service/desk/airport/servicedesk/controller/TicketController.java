@@ -6,13 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import service.desk.airport.servicedesk.dao.TicketRepository;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketFilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
 import service.desk.airport.servicedesk.security.service.JwtService;
 import service.desk.airport.servicedesk.service.TicketService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(path="/ticket")
@@ -37,6 +40,9 @@ public class TicketController {
             return new  ResponseEntity<TicketResponse>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Autowired
+    TicketRepository ticketRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponse> getTicketById(@PathVariable("id")Integer ticketId) {
@@ -116,11 +122,38 @@ public class TicketController {
 
     @PostMapping("/filter")
     public ResponseEntity<List<TicketResponse>> getFilteredTickets(
-            @RequestBody TicketFilterRequest request){
+            @RequestBody TicketFilterRequest request) {
         try {
             return ResponseEntity.ok(ticketService.filteredSortedTickets(request));
         } catch (Exception e) {
-            return new  ResponseEntity<List<TicketResponse>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<TicketResponse>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/related/{ticketid}/{relatedticketid}")
+    public ResponseEntity<TicketResponse> addRelatedTicketTo(
+            @PathVariable("ticketid") Integer ticketId,
+            @PathVariable("relatedticketid") Integer relatedTicketId) {
+        try{
+            var ticket = ticketService.getTicket((ticketId));
+
+            for(var t : ticket.getRelatedTickets()) {
+                if(Objects.equals(t.getId(), relatedTicketId)) {
+                    return new ResponseEntity<TicketResponse>(HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            var relatedTicket = ticketService.getTicket((relatedTicketId));
+
+            if(Objects.equals(ticket.getId(), relatedTicket.getId())) {
+                return new ResponseEntity<TicketResponse>(HttpStatus.BAD_REQUEST);
+            }
+
+            ticket.addRelatedTicket(relatedTicket);
+            return ResponseEntity.ok(new TicketResponse(ticket));
+        }
+        catch(Exception e) {
+            return new ResponseEntity<TicketResponse>(HttpStatus.NOT_FOUND);
         }
     }
 }
