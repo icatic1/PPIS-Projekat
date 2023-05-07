@@ -3,22 +3,27 @@ package service.desk.airport.servicedesk.dto.ticketcomment;
 import service.desk.airport.servicedesk.entity.TicketComment;
 import service.desk.airport.servicedesk.security.dto.UserResponse;
 
+import java.time.LocalDateTime;
+
 public class TicketCommentResponse {
     private Integer id;
     private UserResponse createdBy;
     private String comment;
     private Integer ticketId;
 
+    private LocalDateTime dateTime;
+
     public TicketCommentResponse(TicketComment ticketComment) {
         this.id = ticketComment.getId();
         this.createdBy = new UserResponse(ticketComment.getCreatedBy());
         this.comment = ticketComment.getComment();
         this.ticketId = ticketComment.getTicket().getId();
+        this.dateTime = ticketComment.getDateTime();
     }
     public TicketCommentResponse() {
     }
 
-    public TicketCommentResponse(Integer id, UserResponse createdBy, String comment, Integer ticketId) {
+    public TicketCommentResponse(Integer id, UserResponse createdBy, String comment, Integer ticketId, LocalDateTime dateTime) {
         this.id = id;
         this.createdBy = createdBy;
         this.comment = comment;
@@ -55,5 +60,13 @@ public class TicketCommentResponse {
 
     public void setTicketId(Integer ticketId) {
         this.ticketId = ticketId;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
