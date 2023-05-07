@@ -50,25 +50,28 @@ public class TicketService {
         return new TicketResponse(ticket);
     }
 
-    public List<TicketResponse>  getActiveTicketsForUser(Integer userId) {
+    public List<TicketResponse>  getActiveTicketsForUser(String userEmail) {
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
         return ticketRepository
-                .findActiveTicketsByUserId(userId)
+                .findActiveTicketsByUserId(user.getId())
                 .stream()
                 .map(t -> new TicketResponse(t))
                 .collect(Collectors.toList());
     }
 
-    public List<TicketResponse>  getProcessedTicketsForUser(Integer userId) {
+    public List<TicketResponse>  getProcessedTicketsForUser(String userEmail) {
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
         return ticketRepository
-                .findProcessedTicketsByUserId(userId)
+                .findProcessedTicketsByUserId(user.getId())
                 .stream()
                 .map(t -> new TicketResponse(t))
                 .collect(Collectors.toList());
     }
 
-    public List<TicketResponse>  getOtherTicketsForUser(Integer userId) {
+    public List<TicketResponse>  getOtherTicketsForUser(String userEmail) {
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
         return ticketRepository
-                .findOtherActiveTicketsByUserId(userId)
+                .findOtherActiveTicketsByUserId(user.getId())
                 .stream()
                 .map(t -> new TicketResponse(t))
                 .collect(Collectors.toList());

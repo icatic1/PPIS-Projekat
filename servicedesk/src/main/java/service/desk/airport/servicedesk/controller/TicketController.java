@@ -47,25 +47,28 @@ public class TicketController {
         }
     }
 
-    @GetMapping("/active/user/{id}")
+    @GetMapping("/active")
     public ResponseEntity<List<TicketResponse>> getActiveTicketsForUser(
-            @PathVariable("id") Integer userId
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
     ) {
-        return ResponseEntity.ok(ticketService.getActiveTicketsForUser(userId));
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        return ResponseEntity.ok(ticketService.getActiveTicketsForUser(userEmail));
     }
 
-    @GetMapping("/processed/user/{id}")
+    @GetMapping("/processed")
     public ResponseEntity<List<TicketResponse>> getProcessedTicketsForUser(
-            @PathVariable("id") Integer userId
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
     ) {
-        return ResponseEntity.ok(ticketService.getProcessedTicketsForUser(userId));
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        return ResponseEntity.ok(ticketService.getProcessedTicketsForUser(userEmail));
     }
 
-    @GetMapping("/others/user/{id}")
+    @GetMapping("/others")
     public ResponseEntity<List<TicketResponse>> getOtherTicketsForUser(
-            @PathVariable("id") Integer userId
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
     ) {
-        return ResponseEntity.ok(ticketService.getOtherTicketsForUser(userId));
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        return ResponseEntity.ok(ticketService.getOtherTicketsForUser(userEmail));
     }
 
     @PreAuthorize("hasRole('sd_user')")
