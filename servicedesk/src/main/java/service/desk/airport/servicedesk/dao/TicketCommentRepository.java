@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface TicketCommentRepository extends JpaRepository<TicketComment,Integer> {
 
-    @Query("SELECT tc FROM TicketComment tc WHERE tc.ticket.id=:ticketId")
+    @Query("SELECT tc FROM TicketComment tc WHERE tc.ticket.id=:ticketId ORDER BY tc.dateTime DESC")
     public List<TicketComment> findTicketCommentsByTicketId(Integer ticketId);
 }

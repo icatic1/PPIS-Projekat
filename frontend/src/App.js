@@ -5,7 +5,7 @@ import PrivateRoute from "./components/shared/privateroute";
 import {Routes,Route} from "react-router-dom";
 import { useState } from "react";
 import CreateTicket from "./components/user/ticket-create/CreateTicket";
-import TicketOverview from "./components/user/ticket-overview/TicketOverview"
+import TicketOverview from "./components/shared/ticket-overview/TicketOverview"
 import NotFound from "./components/shared/NotFound"
 
 function App() {

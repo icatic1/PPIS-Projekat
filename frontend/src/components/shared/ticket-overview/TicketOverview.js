@@ -7,9 +7,8 @@ import NotFound from '../../shared/NotFound';
 import { Container, Paper } from '@mui/material';
 import ReportIcon from '@mui/icons-material/Report';
 import {i18n} from 'dateformat';
-import dateFormat from 'dateformat';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import TopInfo from './TopInfo';
 import Description from './Description';
 import History from './History';
@@ -65,28 +64,34 @@ function TicketOverview() {
   const id = searchParams.get("id");
 
   const [ticket,setTicket] = useState();
-  const [ticketComments, setTicketComments] = useState([]);
+  const [ticketComments, setTicketComments] = useState();
   
 
   useEffect(() => {
-    if(!mounted && location.state==null) {
-      mounted = true
-      loadData();
+    if(!mounted && location.state && id===location.state.id) {
+      mounted=true
+      setTicket(location.state);
+      api.get('/ticket-comment/ticket/'+id).then((res)=> {
+        setTicketComments(res.data);
+      }) 
+     
     } else if(!mounted) {
-      setTicket(location.state.ticket);
-    }
+      mounted = true
+      loadTicketData();
+      if(id!=null)
+        api.get('/ticket-comment/ticket/' + id).then((res)=> {
+          setTicketComments(res.data);
+        })
+         }
     
   }, []);
 
-  const loadData = () =>{
+  const loadTicketData = () =>{
     if(id!=null) {
-      api.get('/ticket/24').then((res)=> {
+      api.get('/ticket/'+id).then((res)=> {
         setTicket(res.data);
       })
 
-      api.get('/ticket-comment/ticket/24').then((res)=> {
-        setTicketComments(res.data);
-      })
     }
   }
 
@@ -99,14 +104,20 @@ function TicketOverview() {
       <Header></Header>
       {id==null ? <NotFound></NotFound> : 
       <>
-      { ticket?
+      { ticket!=null & ticketComments!=null?
        <Container sx={{ mt: 2 }} style={{ backgroundColor: "#F5F5F5", padding: 0, width: "80%" }}>
           <TopInfo ticket={ticket}/>
           <Description description={ticket.description}/>
-          <History ticketComments={ticketComments}/>
+          <History ticketComments={ticketComments} ticketId={ticket.id}/>
           
 
-       </Container> : <></>
+       </Container> : 
+       <Backdrop
+       sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+       open={true}
+      >
+       <CircularProgress color="inherit" />
+     </Backdrop>
       }
       </>
       }

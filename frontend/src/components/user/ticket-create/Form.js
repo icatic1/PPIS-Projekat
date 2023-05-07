@@ -119,7 +119,7 @@ const Form = () => {
 
         api.post("/ticket/create",formData).then((res)=> {
             document.body.style.cursor='default';
-            navigate("/ticket/" + res.data.id, {state: res.data});
+            navigate("/ticket?id=" + res.data.id, {state: res.data});
             
         })
     }
@@ -191,7 +191,7 @@ const Form = () => {
                         <Grid item xs={12}>
                             <FormControl required style={{ width: "100%" }} error={descriptionError}>
                                 <FormLabel>Detaljan opis</FormLabel>
-                                <Textarea value={formData.description ? formData.description : ""} name="description" onChange={(event) => { handleChange(event) }} minRows={5} style={{ width: "100%" }} />
+                                <Textarea value={formData.description ? formData.description : ""} name="description" onChange={(event) => { handleChange(event) }} minRows={8} style={{ width: "100%" }} />
                             </FormControl>
                         </Grid>
                     </>

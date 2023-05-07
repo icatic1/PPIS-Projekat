@@ -3,8 +3,8 @@ import { Container, Paper } from '@mui/material';
 import ReportIcon from '@mui/icons-material/Report';
 import {i18n} from 'dateformat';
 import dateFormat from 'dateformat';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Options from './Options';
+
 
 
 function TopInfo({ticket}) {
@@ -68,7 +68,11 @@ function TopInfo({ticket}) {
     <Container sx={{ mt: 2 }} style={{ backgroundColor: "#00101F", padding: 30, width: "100%",margin:0,height:150 }}>
           <div style={{width:"100%"}}>
           {priority()}
-          <span style={{fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"right"}}>{dateFormat(ticket.date, " dddd, dd. mmmm  yyyy. H:MM ")}</span>
+          <span style={{fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"right"}}>{dateFormat(ticket.date, " dddd, dd. mmmm  yyyy. HH:MM ")}</span>
+          </div>
+          <div style={{width:"100%",clear:"both",marginTop:"30px"}}>
+            <span style={{fontFamily:"Yantramanav",color:"#ff5252",fontWeight:"bold",float:"left",fontSize:"80%"}}>KOD: #{ticket.code} | {ticket.tag=="INCIDENT" ?"Incident":"Zahtjev za uslugom"}</span>
+
           </div>
           <div style={{width:"100%",clear:"both",marginTop:"30px"}}>
             <span style={{fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"left",fontSize:"180%"}}>{ticket.title}</span>
@@ -76,27 +80,7 @@ function TopInfo({ticket}) {
           </div>
           <div style={{width:"100%",clear:"both",marginTop:"30px"}}>
             <span style={{fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"left",fontSize:"100%"}}>Prijavio: {ticket.createdBy.firstname} {ticket.createdBy.lastname}</span>
-            <ButtonGroup style={{float:"right",margin:0}}>
-              <Button
-                  style={{
-                    backgroundColor: "#ff5252",
-                    textTransform: 'none',
-                    fontFamily: "Yantramanav",
-                    fontWeight: "500", fontSize: "15px", color: "white",
-                    height:"30px"
-                }}
-               
-              >Izbriši zahtjev</Button>
-              <Button
-                 style={{
-                  backgroundColor: "#00101F",
-                   padding: "5px 20px 5px 20px", textTransform: 'none',
-                  fontFamily: "Yantramanav",
-                  fontWeight: "500", fontSize: "15px", color: "white",
-                  height:"30px"
-              }}
-              >Potvrdi rješenje</Button>
-            </ButtonGroup>
+          <Options ticket={ticket}></Options>
           </div>
           </Container>
   )
