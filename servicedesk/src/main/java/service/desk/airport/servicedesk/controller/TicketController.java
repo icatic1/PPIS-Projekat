@@ -77,7 +77,7 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getOtherTicketsForUser(userEmail));
     }
 
-    @PreAuthorize("hasRole('sd_user')")
+    @PreAuthorize("hasRole('sd_agent')")
     @PostMapping("/assign/{id}")
     public ResponseEntity<TicketResponse> assignTicket(
             @PathVariable("id") Integer ticketId,
@@ -102,7 +102,7 @@ public class TicketController {
         }
     }
 
-    @PreAuthorize("hasRole('sd_user')")
+    @PreAuthorize("hasRole('sd_agent')")
     @PostMapping("/close/{id}")
     public ResponseEntity<TicketResponse> closeTicket(
             @PathVariable("id") Integer ticketId) {
