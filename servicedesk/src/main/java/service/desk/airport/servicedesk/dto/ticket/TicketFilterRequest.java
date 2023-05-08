@@ -2,23 +2,27 @@ package service.desk.airport.servicedesk.dto.ticket;
 
 import service.desk.airport.servicedesk.enums.Category;
 import service.desk.airport.servicedesk.enums.PriorityLevel;
+import service.desk.airport.servicedesk.enums.TicketTag;
 import service.desk.airport.servicedesk.security.entity.User;
 
 public class TicketFilterRequest {
     private Integer userId = null;
 
-    private String filterType;
+    private String filterType;// string containing c-category, p-priority, t-tag or any combination of them
 
     private Category category;
+
+    private TicketTag tag;
 
     private PriorityLevel priorityLevel;
 
     private String sort;
 
-    public TicketFilterRequest(Integer userId, String filterType, Category category, PriorityLevel priorityLevel, String sort) {
+    public TicketFilterRequest(Integer userId, String filterType, Category category, TicketTag tag, PriorityLevel priorityLevel, String sort) {
         this.userId = userId;
         this.filterType = filterType;
         this.category = category;
+        this.tag = tag;
         this.priorityLevel = priorityLevel;
         this.sort = sort;
     }
@@ -45,6 +49,14 @@ public class TicketFilterRequest {
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    public TicketTag getTag() {
+        return tag;
+    }
+
+    public void setTag(TicketTag tag) {
+        this.tag = tag;
     }
 
     public Category getCategory() {

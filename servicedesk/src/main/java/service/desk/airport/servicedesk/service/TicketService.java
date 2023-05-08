@@ -105,39 +105,58 @@ public class TicketService {
     }
     public List<TicketResponse> filteredSortedTickets(TicketFilterRequest ticketFilterRequest) {
         System.out.println("Usao u rutu");
-        List<Ticket> tickets;
+        System.out.println();
+        List<TicketResponse> tickets;
         if (ticketFilterRequest.getUserId() == null){
-            tickets = ticketRepository.findAll().stream().filter(ticket -> ticket.getStatus().equals(TicketStatus.ACTIVE)).toList();
+            tickets = ticketRepository
+                    .findActiveTickets()
+                    .stream()
+                    .map(TicketResponse::new)
+                    .collect(Collectors.toList());
         }
         else {
-            tickets = ticketRepository.findAll().stream().filter(ticket -> ticket.getAssignedTo().getId().equals(ticketFilterRequest.getUserId())).toList();
+            System.out.println("Usao u branch " + ticketFilterRequest.getUserId());
+            tickets = ticketRepository
+                    .findAssignedTicketsForId(ticketFilterRequest.getUserId())
+                    .stream()
+                    .map(TicketResponse::new)
+                    .collect(Collectors.toList());
         }
-            switch (ticketFilterRequest.getFilterType()){
-                case "category":
-                    tickets = tickets.stream().filter(ticket -> ticket.getCategory().equals(ticketFilterRequest.getCategory())).toList();
-                    break;
-                case "tag":
-                    //tickets = tickets.stream().filter(ticket -> ticket.getCategory().equals(ticketFilterRequest.getCategory())).toList();
-                    break;
-                case "priority":
-                    tickets = tickets.stream().filter(ticket -> ticket.getPriorityLevel().equals(ticketFilterRequest.getPriorityLevel())).toList();
-                    break;
-                default:
-                    break;
-            }
-        List<TicketResponse> responses = new ArrayList<>();
-        tickets.forEach(ticket -> responses.add(new TicketResponse(ticket)));
+        if( ticketFilterRequest.getFilterType().contains("c")){
+            tickets = tickets.stream().filter(ticket -> ticket.getCategory().equals(ticketFilterRequest.getCategory())).toList();
+        }
+        if( ticketFilterRequest.getFilterType().contains("p")){
+            tickets = tickets.stream().filter(ticket -> ticket.getPriorityLevel().equals(ticketFilterRequest.getPriorityLevel())).toList();
+        }
+        if( ticketFilterRequest.getFilterType().contains("t")){
+            tickets = tickets.stream().filter(ticket -> ticket.getTag().equals(ticketFilterRequest.getTag())).toList();
+        }
 
-        if (ticketFilterRequest.getSort().startsWith("d") || ticketFilterRequest.getSort().startsWith("D") )
-            responses.sort(Collections.reverseOrder());
-
-        return responses;
+        return tickets;
 
     }
     public List<TicketResponse> getAllTickets() {
-        List<Ticket> tickets = ticketRepository.findAll();
-        List<TicketResponse> responses = new ArrayList<>();
-        tickets.forEach(ticket -> responses.add(new TicketResponse(ticket)));
-        return responses;
+        return ticketRepository
+                .getAllTicketsHelper()
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
     }
+    public List<TicketResponse> getActiveTickets() {
+        return ticketRepository
+                .findActiveTickets()
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse> getAllTicketsForUser(Integer userId) {
+        return ticketRepository
+                .findAssignedTicketsForId(userId)
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
+    }
+
+
 }

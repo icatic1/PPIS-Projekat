@@ -1,5 +1,6 @@
 package service.desk.airport.servicedesk.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -111,8 +112,9 @@ public class TicketController {
 
     }
 
+    @PreAuthorize("hasRole('sd_agent')")
     @GetMapping("/all")
-    public ResponseEntity<List<TicketResponse>> getAllTickets() {
+    public ResponseEntity<List<TicketResponse>> getAllTickets(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) { //helper route, probably delete later
         try {
             return ResponseEntity.ok(ticketService.getAllTickets());
         } catch(Exception e) {
@@ -120,9 +122,11 @@ public class TicketController {
         }
     }
 
+    @PreAuthorize("hasRole('sd_agent')")
     @PostMapping("/filter")
     public ResponseEntity<List<TicketResponse>> getFilteredTickets(
-            @RequestBody TicketFilterRequest request) {
+            @RequestBody TicketFilterRequest request,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
             return ResponseEntity.ok(ticketService.filteredSortedTickets(request));
         } catch (Exception e) {
