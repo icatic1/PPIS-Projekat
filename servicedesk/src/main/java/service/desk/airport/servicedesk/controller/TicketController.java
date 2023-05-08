@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 import service.desk.airport.servicedesk.dao.TicketRepository;
+import service.desk.airport.servicedesk.dto.other.idArray;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketFilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
+import service.desk.airport.servicedesk.entity.Ticket;
 import service.desk.airport.servicedesk.security.service.JwtService;
 import service.desk.airport.servicedesk.service.TicketService;
 
@@ -52,6 +55,24 @@ public class TicketController {
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/related/{id}")
+    public ResponseEntity<TicketResponse> getTicketWithRelatedById(@PathVariable("id")Integer ticketId) {
+        try {
+            return ResponseEntity.ok(new TicketResponse(ticketService.getTicket(ticketId), false));
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/idarray")
+    public ResponseEntity<List<TicketResponse>> getTicketsByListId(@RequestBody idArray ids) {
+        List<TicketResponse> ticketRespones = new ArrayList<>();
+        for(var t : ticketRepository.findAllById(ids.ids)) {
+            ticketRespones.add(new TicketResponse(t, false));
+        }
+        return ResponseEntity.ok(ticketRespones);
     }
 
     @GetMapping("/active")
@@ -116,6 +137,7 @@ public class TicketController {
     @GetMapping("/all")
     public ResponseEntity<List<TicketResponse>> getAllTickets(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) { //helper route, probably delete later
         try {
+            // var t = ticketService.getAllTickets();
             return ResponseEntity.ok(ticketService.getAllTickets());
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -154,10 +176,42 @@ public class TicketController {
             }
 
             ticket.addRelatedTicket(relatedTicket);
-            return ResponseEntity.ok(new TicketResponse(ticket));
+            relatedTicket.addRelatedTicket(ticket);
+            ticketRepository.save(ticket);
+            ticketRepository.save(relatedTicket);
+            return ResponseEntity.ok(new TicketResponse(ticket, false));
         }
         catch(Exception e) {
             return new ResponseEntity<TicketResponse>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping("/related/wipe/{ticketid}")
+    public ResponseEntity<TicketResponse> wipeRelatedTickets(@PathVariable Integer ticketid) {
+        var ticket = ticketService.getTicket(ticketid);
+        ticket.setRelatedTickets(new ArrayList<>());
+        ticketRepository.save(ticket);
+        return ResponseEntity.ok(new TicketResponse(ticket, false));
+    }
+
+    @PostMapping("/related/delete/{ticketid}/{relatedticketid}")
+    public ResponseEntity<TicketResponse> deleteSingleRelatedTicket(
+            @PathVariable Integer ticketid,
+            @PathVariable Integer relatedticketid) {
+        try {
+            var ticket = ticketService.getTicket(ticketid);
+            var relatedTicket = ticketService.getTicket(relatedticketid);
+
+            ticket.removeRelatedTicket(relatedTicket);
+            relatedTicket.removeRelatedTicket(ticket);
+
+            ticketRepository.save(ticket);
+            ticketRepository.save(relatedTicket);
+            return ResponseEntity.ok(new TicketResponse(ticket, false));
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 }

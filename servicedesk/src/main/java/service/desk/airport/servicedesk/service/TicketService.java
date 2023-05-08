@@ -136,11 +136,10 @@ public class TicketService {
 
     }
     public List<TicketResponse> getAllTickets() {
-        return ticketRepository
-                .getAllTicketsHelper()
-                .stream()
-                .map(TicketResponse::new)
-                .collect(Collectors.toList());
+        List<Ticket> tickets = ticketRepository.findAll();
+        List<TicketResponse> responses = new ArrayList<>();
+        tickets.forEach(ticket -> responses.add(new TicketResponse(ticket, false)));
+        return responses;
     }
     public List<TicketResponse> getActiveTickets() {
         return ticketRepository

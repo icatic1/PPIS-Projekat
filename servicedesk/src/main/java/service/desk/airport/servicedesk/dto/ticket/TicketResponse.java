@@ -8,6 +8,7 @@ import service.desk.airport.servicedesk.enums.TicketTag;
 import service.desk.airport.servicedesk.security.dto.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TicketResponse {
@@ -31,6 +32,8 @@ public class TicketResponse {
 
     private UserResponse createdBy;
 
+    private List<Integer> relatedTicketIds;
+
 
     public TicketResponse(Ticket t) {
 
@@ -47,8 +50,30 @@ public class TicketResponse {
         this.createdBy =  new UserResponse(t.getCreatedBy());
         if(t.getAssignedTo()!=null)
             this.assignedTo = new UserResponse(t.getAssignedTo());
+    }
+
+    public TicketResponse(Ticket t, boolean stopRecursion) {
+        this.id = t.getId();
+        this.code = t.getCode();
+        this.title =t.getTitle();
+        this.description = t.getDescription();
+        this.status = t.getStatus();
+        this.priorityLevel = t.getPriorityLevel();
+        this.category = t.getCategory();
+        this.tag = t.getTag();
+        this.date = t.getDate();
+
+        if(!stopRecursion) {
+            this.relatedTicketIds = new ArrayList<>();
+            for(var x : t.getRelatedTickets()) {
+                this.relatedTicketIds.add(x.getId());
+            }
+        }
 
 
+        this.createdBy =  new UserResponse(t.getCreatedBy());
+        if(t.getAssignedTo()!=null)
+            this.assignedTo = new UserResponse(t.getAssignedTo());
     }
 
 
@@ -141,4 +166,11 @@ public class TicketResponse {
         this.createdBy = createdBy;
     }
 
+    public List<Integer> getRelatedTicketIds() {
+        return relatedTicketIds;
+    }
+
+    public void setRelatedTicketIds(List<Integer> relatedTicketIds) {
+        this.relatedTicketIds = relatedTicketIds;
+    }
 }

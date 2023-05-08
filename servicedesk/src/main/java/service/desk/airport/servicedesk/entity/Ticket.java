@@ -55,7 +55,6 @@ public class Ticket {
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name="related_tickets",
             joinColumns=@JoinColumn(name="ticketId"),
@@ -63,7 +62,6 @@ public class Ticket {
     )
     private List<Ticket> relatedTickets;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name="related_tickets",
             joinColumns=@JoinColumn(name="relatedTicketId"),
@@ -220,5 +218,9 @@ public class Ticket {
 
     public void addRelatedTicket(Ticket t) {
         this.relatedTickets.add(t);
+    }
+
+    public void removeRelatedTicket(Ticket t) {
+        this.relatedTickets.remove(t);
     }
 }
