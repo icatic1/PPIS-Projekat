@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Yantramanav:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@700&display=swap");
 
 .App {
   text-align: center;
@@ -17,7 +17,7 @@
 }
 
 .body {
-  background-color: #E4E4E4;
+  background-color: #e4e4e4;
 }
 
 .App-header {

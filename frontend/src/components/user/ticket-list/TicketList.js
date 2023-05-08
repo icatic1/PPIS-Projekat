@@ -10,6 +10,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { makeStyles } from "@material-ui/core";
 import Ticket from "./Ticket";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 function TicketList() {
   const [activeTickets, setActiveTickets] = useState();
   const [processedTickets, setProcessedTickets] = useState();
@@ -17,7 +19,7 @@ function TicketList() {
 
   const [valueTab, setValueTab] = React.useState("1");
   const [backgroundColorTab, setBackgroundColorTab] = useState([
-    "#D9D9D9",
+    "#F5F5F5",
     "#00101F",
     "#00101F",
   ]);
@@ -27,7 +29,7 @@ function TicketList() {
   const handleChange = (event, newValue) => {
     const newBackgroundColor = backgroundColorTab.map((c, i) => {
       if (i == valueTab - 1) return "#00101F";
-      else if (i == newValue - 1) return "#D9D9D9";
+      else if (i == newValue - 1) return "#F5F5F5";
       else return c;
     });
     setBackgroundColorTab(newBackgroundColor);
@@ -51,7 +53,7 @@ function TicketList() {
       <Header></Header>
       <Container
         sx={{ mt: 2 }}
-        style={{ backgroundColor: "#D9D9D9", padding: 0, width: "80%" }}
+        style={{ backgroundColor: "#F5F5F5", padding: 0, width: "80%" }}
       >
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={valueTab}>
@@ -68,6 +70,7 @@ function TicketList() {
                     borderBottom: 1,
                     borderColor: "divider",
                     backgroundColor: backgroundColorTab[0],
+                    fontFamily: "Yantramanav",
                   }}
                   indicatorColor={""}
                   label={
@@ -88,6 +91,7 @@ function TicketList() {
                     borderBottom: 1,
                     borderColor: "divider",
                     backgroundColor: backgroundColorTab[1],
+                    fontFamily: "Yantramanav",
                   }}
                   label={
                     <span
@@ -120,12 +124,25 @@ function TicketList() {
                     borderBottom: 1,
                     borderColor: "divider",
                     backgroundColor: backgroundColorTab[2],
+                    fontFamily: "Yantramanav",
                   }}
                 />
               </TabList>
             </Box>
             <TabPanel value="1">
-              <Ticket ticket={activeTickets}></Ticket>
+              {activeTickets != null ? (
+                <Ticket ticket={activeTickets}></Ticket>
+              ) : (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={true}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              )}
             </TabPanel>
             <TabPanel value="2">
               {" "}
@@ -150,7 +167,7 @@ const useStyles = makeStyles({
   },
   customStyleOnActiveTab: {
     color: "black",
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#F5F5F5",
   },
   activeTab: {
     fontSize: "1em",
