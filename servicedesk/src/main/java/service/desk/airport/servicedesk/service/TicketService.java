@@ -103,6 +103,10 @@ public class TicketService {
         ticketRepository.save(ticket);
         return  new TicketResponse(ticket);
     }
+
+    public void deleteTicket(Integer ticketId) {
+        ticketRepository.deleteById(ticketId);
+    }
     public List<TicketResponse> filteredSortedTickets(TicketFilterRequest ticketFilterRequest) {
         System.out.println("Usao u rutu");
         System.out.println();

@@ -16,13 +16,13 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     @Query("SELECT t FROM Ticket t WHERE t.createdBy.id=:userId")
     public List<Ticket> findTicketsByUserId(Integer userId);
 
-    @Query("SELECT t FROM Ticket t WHERE t.createdBy.id=:userId AND (t.status=0 OR t.status=1)")
+    @Query("SELECT t FROM Ticket t WHERE t.createdBy.id=:userId AND (t.status!=2 ) ORDER BY  t.date DESC")
     public List<Ticket> findActiveTicketsByUserId(Integer userId);
 
-    @Query("SELECT t FROM Ticket t WHERE t.createdBy.id=:userId AND t.status=2")
+    @Query("SELECT t FROM Ticket t WHERE t.createdBy.id=:userId AND t.status=2 ORDER BY  t.date DESC")
     public List<Ticket> findProcessedTicketsByUserId(Integer userId);
 
-    @Query("SELECT t FROM Ticket t WHERE t.createdBy.id!=:userId AND (t.status=0 OR t.status=1)")
+    @Query("SELECT t FROM Ticket t WHERE t.createdBy.id!=:userId AND (t.status!=2) ORDER BY  t.date DESC")
     public List<Ticket> findOtherActiveTicketsByUserId(Integer userId);
 
     @Query("SELECT t FROM Ticket t WHERE (t.status=0 OR t.status=1)")

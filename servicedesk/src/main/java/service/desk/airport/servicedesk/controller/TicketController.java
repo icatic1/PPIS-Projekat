@@ -124,6 +124,15 @@ public class TicketController {
         }
     }
 
+    @PreAuthorize("hasRole('sd_user')")
+    @DeleteMapping("/{id}")
+    public void deleteTicket(
+            @PathVariable("id") Integer ticketId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        ticketService.deleteTicket(ticketId);
+    }
+
     @PreAuthorize("hasRole('sd_agent')")
     @PostMapping("/close/{id}")
     public ResponseEntity<TicketResponse> closeTicket(
