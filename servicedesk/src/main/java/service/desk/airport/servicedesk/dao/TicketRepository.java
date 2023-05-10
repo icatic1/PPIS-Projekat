@@ -34,4 +34,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     @Query("SELECT t FROM Ticket t")
     public List<Ticket> getAllTicketsHelper();
 
+    @Query("SELECT t from Ticket t WHERE t.status=0 AND t.priorityLevel=3")
+    public List<Ticket> findUrgentUnassignedTickets();
+
 }

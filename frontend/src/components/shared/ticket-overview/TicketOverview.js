@@ -12,6 +12,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import TopInfo from "./TopInfo";
 import Description from "./Description";
 import History from "./History";
+import authService from "../../../util/auth.service";
+import UnauthorizedAccess from "../UnauthorizedAccess"
 
 i18n.dayNames = [
   "Ned",
@@ -91,11 +93,15 @@ function TicketOverview() {
     }
   };
 
+  const user = authService.getCurrentUser();
   return (
     <div>
       <Header></Header>
       {id == null ? (
         <NotFound></NotFound>
+      ) : (user.role=="sd_user" && ticket!=null && ticket.createdBy.id!=user.id)
+      || (user.role=="sd_agent" && ticket!=null && ticket.assignedTo!=null && ticket.assignedTo.id!=user.id) ?(
+        <UnauthorizedAccess></UnauthorizedAccess>
       ) : (
         <>
           {(ticket != null) & (ticketComments != null) ? (
@@ -105,7 +111,7 @@ function TicketOverview() {
             >
               <TopInfo ticket={ticket} />
               <Description description={ticket.description} />
-              <History ticketComments={ticketComments} ticketId={ticket.id} />
+              <History ticketComments={ticketComments} ticketId={ticket.id} status={ticket.status} />
             </Container>
           ) : (
             <Backdrop

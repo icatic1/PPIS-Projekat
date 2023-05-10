@@ -161,5 +161,13 @@ public class TicketService {
                 .collect(Collectors.toList());
     }
 
+    public List<TicketResponse> getUrgentUnassignedTickets() {
+        return ticketRepository
+                .findUrgentUnassignedTickets()
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
+    }
+
 
 }

@@ -15,6 +15,7 @@ import api from "../../../util/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ReportIcon from "@mui/icons-material/Report";
+import TicketCard from "./TicketCard";
 
 const useStyles = makeStyles(() => ({
   ul: {
@@ -24,12 +25,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Ticket({ ticket }) {
+function Ticket({ ticket,bodyColor,ticketsPerPage=5}) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(1);
   const [ticketPage, setTicketPage] = useState([]);
-  const ticketsPerPage = 5;
 
   const classes = useStyles();
   useEffect(() => {
@@ -163,92 +163,12 @@ function Ticket({ ticket }) {
     <Container
       style={{
         width: "90%",
-        backgroundColor: "#00101F",
+        backgroundColor: bodyColor ? bodyColor : "#00101F",
         padding: 20,
       }}
     >
       {ticketPage.map((t) => (
-        <Link to={"/ticket?id=" + t.id}>
-          <Card
-            hoverable
-            key={t.id}
-            style={{
-              padding: 15,
-              marginBottom: 20,
-              height: "auto",
-              backgroundColor: "white",
-              fontFamily: "Yantramanav",
-              overflow: "hidden",
-              justifyContent: "space-between",
-            }}
-          >
-            <div style={{ width: "100%" }}>
-              <span
-                style={{
-                  fontWeight: "bold",
-                  float: "left",
-                  fontFamily: "Yantramanav",
-                }}
-              >
-                {dateFormat(t.date, "dd/mm/yyyy, HH:MM")}
-              </span>
-              <span
-                style={{
-                  fontWeight: "bold",
-                  float: "right",
-                  fontFamily: "Yantramanav",
-                }}
-              >
-                Kategorija: {category(t)}
-              </span>
-            </div>
-
-            <span
-              style={{
-                clear: "both",
-                float: "left",
-                fontWeight: "bold",
-                fontSize: "1.8em",
-                fontFamily: "Yantramanav",
-              }}
-            >
-              {t.title}
-            </span>
-            <span
-              style={{
-                clear: "both",
-                float: "left",
-                marginBottom: "20px",
-                fontFamily: "Yantramanav",
-              }}
-            >
-              {t.description}
-            </span>
-
-            <div style={{ width: "100%" }}>
-              <span
-                style={{
-                  fontWeight: "bold",
-                  clear: "both",
-                  float: "left",
-                  fontFamily: "Yantramanav",
-                }}
-              >
-                {t.createdBy.firstname} {t.createdBy.lastname}
-              </span>
-              <span
-                style={{
-                  fontFamily: "Yantramanav",
-
-                  fontWeight: "bold",
-                  float: "right",
-                }}
-              >
-                {priority(t)}
-              </span>
-            </div>
-          </Card>
-        </Link>
+          <TicketCard t={t}></TicketCard>
       ))}
       {ticket.length > 0 ? (
         <Stack spacing={2}>

@@ -51,7 +51,7 @@ public class TicketController {
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponse> getTicketById(@PathVariable("id")Integer ticketId) {
         try {
-            return ResponseEntity.ok(new TicketResponse(ticketService.getTicket(ticketId)));
+            return ResponseEntity.ok(new TicketResponse(ticketService.getTicket(ticketId),false));
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -221,6 +221,12 @@ public class TicketController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @PreAuthorize("hasRole('sd_agent')")
+    @GetMapping("/urgent")
+    public ResponseEntity<List<TicketResponse>> getUrgentActiveTickets() {
+        return ResponseEntity.ok(ticketService.getUrgentUnassignedTickets());
     }
 
 }
