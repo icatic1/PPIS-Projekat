@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../util/api";
 import authService from "../../../util/auth.service";
+import TicketForwardModal from "../../agent/ticket-forward/TicketForwardModal";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -17,6 +18,8 @@ function Options({ ticket }) {
 
   const [verifyAlert, setVerifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+
+  const [open, setOpen] = useState(false);
 
   const handleVerify = () => {
     api.post("/ticket/verify/" + ticket.id).then(() => {
@@ -36,6 +39,10 @@ function Options({ ticket }) {
         navigate("/ticket-list");
       }, 3000);
     });
+  };
+
+  const handleModalForward = () => {
+    setOpen(true);
   };
 
   return (
@@ -90,49 +97,57 @@ function Options({ ticket }) {
           )}
         </ButtonGroup>
       ) : (
-        <ButtonGroup style={{ float: "right", margin: 0 }}>
-          <Button
-            style={{
-              backgroundColor: "#00101f",
-              textTransform: "none",
-              fontFamily: "Yantramanav",
-              fontWeight: "500",
-              fontSize: "15px",
-              color: "white",
-              height: "30px",
-            }}
-          >
-            Proslijedi zahtjev
-          </Button>
-          <Button
-            style={{
-              backgroundColor: "#00101F",
-              padding: "5px 20px 5px 20px",
-              textTransform: "none",
-              fontFamily: "Yantramanav",
-              fontWeight: "500",
-              fontSize: "15px",
-              color: "white",
-              height: "30px",
-            }}
-          >
-            Poveži zahtjeve
-          </Button>
-          <Button
-            style={{
-              backgroundColor: "#ff5252",
-              padding: "5px 20px 5px 20px",
-              textTransform: "none",
-              fontFamily: "Yantramanav",
-              fontWeight: "500",
-              fontSize: "15px",
-              color: "white",
-              height: "30px",
-            }}
-          >
-            Zatvori zahtjev
-          </Button>
-        </ButtonGroup>
+        <div>
+          <ButtonGroup style={{ float: "right", margin: 0 }}>
+            <Button
+              style={{
+                backgroundColor: "#00101f",
+                textTransform: "none",
+                fontFamily: "Yantramanav",
+                fontWeight: "500",
+                fontSize: "15px",
+                color: "white",
+                height: "30px",
+              }}
+              onClick={handleModalForward}
+            >
+              Proslijedi zahtjev
+            </Button>
+            <Button
+              style={{
+                backgroundColor: "#00101F",
+                padding: "5px 20px 5px 20px",
+                textTransform: "none",
+                fontFamily: "Yantramanav",
+                fontWeight: "500",
+                fontSize: "15px",
+                color: "white",
+                height: "30px",
+              }}
+            >
+              Poveži zahtjeve
+            </Button>
+            <Button
+              style={{
+                backgroundColor: "#ff5252",
+                padding: "5px 20px 5px 20px",
+                textTransform: "none",
+                fontFamily: "Yantramanav",
+                fontWeight: "500",
+                fontSize: "15px",
+                color: "white",
+                height: "30px",
+              }}
+            >
+              Zatvori zahtjev
+            </Button>
+          </ButtonGroup>
+          <TicketForwardModal
+            open={open}
+            setOpen={setOpen}
+            ticketid={ticket.id}
+          ></TicketForwardModal>
+        </div>
       )}
     </>
   );

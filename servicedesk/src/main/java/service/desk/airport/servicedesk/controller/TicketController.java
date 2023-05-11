@@ -229,4 +229,9 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getUrgentUnassignedTickets());
     }
 
+    @PreAuthorize("hasRole('sd_agent')")
+    @PostMapping("/assign/{ticket_id}/{user_id}")
+    public ResponseEntity<TicketResponse> assignTicketToUser(@PathVariable Integer ticket_id, @PathVariable Integer user_id) {
+        return ResponseEntity.ok(ticketService.assignTicketToUser(ticket_id,user_id));
+    }
 }

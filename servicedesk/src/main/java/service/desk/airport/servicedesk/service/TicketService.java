@@ -16,12 +16,10 @@ import service.desk.airport.servicedesk.enums.PriorityLevel;
 import service.desk.airport.servicedesk.enums.TicketStatus;
 import service.desk.airport.servicedesk.enums.TicketTag;
 import service.desk.airport.servicedesk.security.dao.UserRepository;
+import service.desk.airport.servicedesk.security.entity.User;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -169,5 +167,13 @@ public class TicketService {
                 .collect(Collectors.toList());
     }
 
+    public TicketResponse assignTicketToUser(Integer ticketId, Integer userId) {
+        var user = userRepository.findById(userId);
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        ticket.setStatus(TicketStatus.ASSIGNED);
+        ticket.setAssignedTo(user.get());
+        ticketRepository.save(ticket);
+        return  new TicketResponse(ticket);
+    }
 
 }

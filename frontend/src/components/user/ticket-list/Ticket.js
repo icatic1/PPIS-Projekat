@@ -1,20 +1,13 @@
-import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ReportIcon from "@mui/icons-material/Report";
+import { Container } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import dateFormat from "dateformat";
-import { Card, Container, Paper } from "@mui/material";
-import { useState, useEffect } from "react";
-import Textarea from "@mui/joy/Textarea";
-import { FormControl, Button } from "@mui/material";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
-import api from "../../../util/api";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import ReportIcon from "@mui/icons-material/Report";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TicketCard from "./TicketCard";
 
 const useStyles = makeStyles(() => ({
@@ -25,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Ticket({ ticket,bodyColor,ticketsPerPage=5}) {
+function Ticket({ ticket, bodyColor, ticketsPerPage = 5 }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(1);
@@ -168,7 +161,7 @@ function Ticket({ ticket,bodyColor,ticketsPerPage=5}) {
       }}
     >
       {ticketPage.map((t) => (
-          <TicketCard t={t}></TicketCard>
+        <TicketCard t={t}></TicketCard>
       ))}
       {ticket.length > 0 ? (
         <Stack spacing={2}>
