@@ -78,6 +78,11 @@ public class TicketService {
 
     public TicketResponse assignTicket( String userEmail, Integer ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+
+        //Someone has already taken the ticket
+        if(ticket.getStatus().equals(TicketStatus.ASSIGNED))
+            return null;
+
         ticket.setStatus(TicketStatus.ASSIGNED);
         var user = userRepository.findByEmail(userEmail).orElseThrow();
         ticket.setAssignedTo(user);
@@ -87,6 +92,8 @@ public class TicketService {
 
     public TicketResponse verifyTicket( Integer ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if(ticket.getStatus() != TicketStatus.ASSIGNED)
+            return null;
         ticket.setStatus(TicketStatus.VERIFIED);
         ticketRepository.save(ticket);
         return  new TicketResponse(ticket);
@@ -102,8 +109,14 @@ public class TicketService {
         return  new TicketResponse(ticket);
     }
 
-    public void deleteTicket(Integer ticketId) {
-        ticketRepository.deleteById(ticketId);
+    public String deleteTicket(Integer ticketId) {
+        var ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if(ticket.getStatus().equals(TicketStatus.ACTIVE)) {
+            ticketRepository.deleteById(ticketId);
+            return "Uspješno obrisano";
+        }
+
+        return null;
     }
     public List<TicketResponse> filteredSortedTickets(TicketFilterRequest ticketFilterRequest) {
         System.out.println("Usao u rutu");
@@ -168,10 +181,12 @@ public class TicketService {
     }
 
     public TicketResponse assignTicketToUser(Integer ticketId, Integer userId) {
-        var user = userRepository.findById(userId);
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if(ticket.getStatus().equals(TicketStatus.CLOSED) || ticket.getStatus().equals(TicketStatus.VERIFIED))
+            return null;
         ticket.setStatus(TicketStatus.ASSIGNED);
-        ticket.setAssignedTo(user.get());
+        var user = userRepository.findById(userId).orElseThrow();
+        ticket.setAssignedTo(user);
         ticketRepository.save(ticket);
         return  new TicketResponse(ticket);
     }

@@ -10,7 +10,7 @@ import userEvent from '@testing-library/user-event';
 import authService from '../../../util/auth.service';
 
 
-function TopInfo({ticket}) {
+function TopInfo({ticket,setTicket,setTicketComments,ticketComments}) {
 
   const [open,setOpen] = useState(false)
   const [relatedTickets,setRelatedTickets] = useState([])
@@ -136,11 +136,12 @@ function TopInfo({ticket}) {
             <span style={{fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"left",fontSize:"100%"}}>Prijavio: {ticket.createdBy.firstname} {ticket.createdBy.lastname}</span>
             {status()}
           </div>
-          {ticket.assignedTo ?
+          
           <div style={{width:"100%",clear:"both",paddingTop:"5px",display:"inline-block"}}>
-            <span style={{verticalAlign:"middle",fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"left",fontSize:"100%"}}>Preuzeo: {ticket.assignedTo.firstname} {ticket.assignedTo.lastname}</span>
-            <Options ticket={ticket}></Options>
-          </div>:<></>}
+          {ticket.assignedTo ? <span style={{verticalAlign:"middle",fontFamily:"Yantramanav",color:"white",fontWeight:"bold",float:"left",fontSize:"100%"}}>Preuzeo: {ticket.assignedTo.firstname} {ticket.assignedTo.lastname}</span>
+          :<></>}
+            <Options ticket={ticket} setTicket={setTicket} setTicketComments={setTicketComments} ticketComments={ticketComments}></Options>
+          </div>
           <RelatedTickets open={open} setOpen={setOpen} tickets={relatedTickets} ></RelatedTickets>
           </Container>
   )

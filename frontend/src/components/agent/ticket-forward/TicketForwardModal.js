@@ -88,6 +88,13 @@ export default function TicketForwardModal({ open, setOpen, ticketid }) {
 
   const handleSubmit = () => {
     api.get("/user/department/" + category).then((res) => {
+
+      //Dodaj da vraca 404 ako nema agenata u odjelu, pa izbaci alert kao i ranije
+      //Takodjer stavi da ti BE vraca 400 ako je u medjuvremenu, dok je stigao zahtjev
+      //ticket presao u status koji NIJE ASSIGNED (npr. user je u medjuvremenu potvrdio rjesenje)
+      //i u tom slucaju se ne treba proslijediti zahtjev
+      //Na frontu u ovom slucaju (400) prikazi error alert i onda refresh stranicu da se ponovo
+      //nabave svjezi podaci o ticketu i prikazu
       if (!res.data) {
         setSeverity("error");
         setAlertMessage("U odabranom odjelu nema dostupnih agenata!");
@@ -95,15 +102,22 @@ export default function TicketForwardModal({ open, setOpen, ticketid }) {
       } else {
         setAssignedTo(res.data);
         console.log(assignedTo);
+
+        //Ovdje sam izmijenila da se salje res.data.id, a ne da uzima iz state
+        //iz razloga sto update state-a nije instantan
+        //ali ti ces svakako ovo promijeniti da se salje jedan zahtjev tako da nije toliko ni bitno
+        // samo stavi kad ti taj zahtjev vrati res koji ce biti agent kom je proslijedjen zahtjev
+        // da se iz tog res-a uzimaju podaci kad se salje zahtjev za komentar (ispod imas objasnjenje)
+
         api
-          .post("/ticket/assign/" + ticketid + "/" + assignedTo.id)
+          .post("/ticket/assign/" + ticketid + "/" + res.data.id)
           .then(() => {
             setSeverity("success");
             setAlertMessage(
               "Zahtjev je uspješno proslijeđen agentu: " +
-                assignedTo.firstname +
+                res.data.firstname +
                 " " +
-                assignedTo.lastname +
+                res.data.lastname +
                 "."
             );
             setAlert(true);
@@ -111,6 +125,13 @@ export default function TicketForwardModal({ open, setOpen, ticketid }) {
               navigate("/");
             }, 3000);
           });
+
+          //Dodaj u slucaju da proslijedjivanje zahtjeva bude uspjesno
+          // da se posalje komentar s tekstom "Zahtjev proslijeđen agentu [ime i prezime]"
+          //evo kod za to:
+          /* api.post("/ticket-comment/create",{ticketId:ticket.id,comment:"Zahtjev proslijeđen " + res.data.firstname + " " + res.data.lastname})
+          */
+
       }
     });
   };

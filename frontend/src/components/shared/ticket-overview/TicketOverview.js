@@ -109,7 +109,7 @@ function TicketOverview() {
               sx={{ mt: 2 }}
               style={{ backgroundColor: "#F5F5F5", padding: 0, width: "80%" }}
             >
-              <TopInfo ticket={ticket} />
+              <TopInfo ticket={ticket} setTicket={setTicket} setTicketComments={setTicketComments} ticketComments={ticketComments}/>
               <Description description={ticket.description} />
               <History ticketComments={ticketComments} ticketId={ticket.id} status={ticket.status} />
             </Container>

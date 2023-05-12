@@ -5,24 +5,43 @@ import ReportIcon from "@mui/icons-material/Report";
 import {Button} from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import api from "../../../util/api";
-import { red } from '@mui/material/colors';
+import { useState } from 'react';
+import {Snackbar} from '@mui/material';
+import MuiAlert from "@mui/material/Alert";
+
 import authService from '../../../util/auth.service';
 
 
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 function TicketCard({t}) {
 
+    const [alert, setAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [severity, setSeverity] = useState("");
     const user = authService.getCurrentUser();
     const navigate = useNavigate();
     const assignTicket = () => {
         try {
         api.post("/ticket/assign/"+t.id).then((res)=> {
             if(res.status==200) {
-              api.post("/ticket-comment/add",{ticketId:t.id,comment:"Preuzet zahtjev"})
+              api.post("/ticket-comment/create",{ticketId:t.id,comment:"Preuzet zahtjev"})
               navigate("/ticket?id="+t.id)
+            } else {
+              if(res.status==400) {
+                setAlertMessage("Zahtjev je već preuzet od strane drugog agenta")
+                setAlert(true)
+                setSeverity("error")
+              } else if(res.status==404) {
+                setAlertMessage("Zahtjev više ne postoji")
+                setAlert(true)
+                setSeverity("error")
+              }
             }
         }) } catch(e) {
-            console.log(e)
         }
     }
 
@@ -132,9 +151,52 @@ function TicketCard({t}) {
         }
       };
 
+      const status = (ticket) => {
+        switch(ticket.status) {
+          case "ACTIVE":
+          return(
+            <span style={{color: "#ffeb3b",fontWeight:"bold", fontFamily:"Yantramanav",verticalAlign:"middle"}}><span style={{color:'#00101F'}}>Status:</span> Otvoren</span>
+          )
+          break;
+          case "ASSIGNED":
+            return(
+              <span style={{color: "#ed6c02",fontWeight:"bold", fontFamily:"Yantramanav",verticalAlign:"middle" }}><span style={{color:'#00101F'}}>Status:</span> U obradi</span>
+            )
+            break;
+          case "VERIFIED":
+            return(
+              <span style={{color: "#2e7d32",fontWeight:"bold", fontFamily:"Yantramanav",verticalAlign:"middle" }}><span style={{color:'#00101F'}}>Status:</span> Verifikovan</span>
+            )
+            break;
+          case "CLOSED":
+            return(
+              <span style={{color: "#c62828",fontWeight:"bold", fontFamily:"Yantramanav",verticalAlign:"middle" }}><span style={{color:'#00101F'}}>Status:</span> Zatvoren</span>
+            )
+            break;
+        }
+      }
+
+      const handleCloseAlert = () => {
+        setAlert(false);
+      };
+
 
   return (
-    <div><Card
+    <div>
+       <Snackbar
+        open={alert}
+        autoHideDuration={6000}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        onClose={handleCloseAlert}
+      >
+        <Alert sx={{ width: "100%" }} severity={severity}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
+    <Card
     hoverable
     key={t.id}
     style={{
@@ -187,13 +249,22 @@ function TicketCard({t}) {
       style={{
         clear: "both",
         float: "left",
-        marginBottom: "20px",
         fontFamily: "Yantramanav",
       }}
     >
-      Šifra: {t.code}
+      <span style={{fontWeight:"bold"}}>Šifra:</span> {t.code}
     </span>
-
+    <span
+      style={{
+        clear: "both",
+        float: "left",
+        padding:0,
+        margin:0,
+        fontFamily: "Yantramanav",
+      }}
+    >
+    {status(t)}
+    </span>
     <div style={{ width: "100%" }}>
       <span
         style={{
