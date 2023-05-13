@@ -8,6 +8,8 @@ import CreateTicket from "./components/user/ticket-create/CreateTicket";
 import TicketOverview from "./components/shared/ticket-overview/TicketOverview";
 import NotFound from "./components/shared/NotFound";
 import TicketList from "./components/user/ticket-list/TicketList";
+import ManualCreateEdit from "./components/agent/manual-edit/ManualCreateEdit";
+import ManualOverview from "./components/shared/manual-overview/ManualOverview";
 
 function App() {
   return (
@@ -26,6 +28,18 @@ function App() {
           <Route
             path="/ticket-list"
             element={<TicketList></TicketList>}
+          ></Route>
+          <Route
+            path="/manual/create"
+            element={<ManualCreateEdit></ManualCreateEdit>}
+          ></Route>
+          <Route
+            path="/manual/edit"
+            element={<ManualCreateEdit></ManualCreateEdit>}
+          ></Route>
+          <Route
+            path="/manual"
+            element={<ManualOverview></ManualOverview>}
           ></Route>
         </Route>
         <Route path="/login" element={<Login></Login>} />

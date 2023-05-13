@@ -38,4 +38,10 @@ public class ManualController {
         return ResponseEntity.ok(manualService.updateManual(request,id));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ManualResponse> getManual(@PathVariable("id") Integer id) {
+
+        return ResponseEntity.ok(manualService.getManual(id));
+    }
+
 }

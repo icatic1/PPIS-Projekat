@@ -36,7 +36,7 @@ public class ManualService {
     }
 
     public ManualResponse updateManual(ManualCreateRequest request,Integer id) {
-        var user = userRepository.findByEmail(request.getUserEmail()).orElseThrow();
+
         var manual = manualRepository.findById(id).orElseThrow();
 
         if(request.getCategory()!=null) {
@@ -59,5 +59,9 @@ public class ManualService {
         manual = manualRepository.save(manual);
 
         return new ManualResponse(manual);
+    }
+
+    public ManualResponse getManual(Integer id) {
+        return new ManualResponse(manualRepository.findById(id).orElseThrow());
     }
 }
