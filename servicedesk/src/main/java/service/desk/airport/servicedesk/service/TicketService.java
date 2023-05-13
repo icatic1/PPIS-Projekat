@@ -132,7 +132,7 @@ public class TicketService {
         else {
             System.out.println("Usao u branch " + ticketFilterRequest.getUserId());
             tickets = ticketRepository
-                    .findAssignedTicketsForId(ticketFilterRequest.getUserId())
+                    .findAssignedTicketsForAgent(ticketFilterRequest.getUserId())
                     .stream()
                     .map(TicketResponse::new)
                     .collect(Collectors.toList());
@@ -166,7 +166,7 @@ public class TicketService {
 
     public List<TicketResponse> getAllTicketsForUser(Integer userId) {
         return ticketRepository
-                .findAssignedTicketsForId(userId)
+                .findAssignedTicketsForAgent(userId)
                 .stream()
                 .map(TicketResponse::new)
                 .collect(Collectors.toList());
@@ -189,6 +189,33 @@ public class TicketService {
         ticket.setAssignedTo(user);
         ticketRepository.save(ticket);
         return  new TicketResponse(ticket);
+    }
+
+    public List<TicketResponse>  getAssignedTicketsForAgent(String userEmail) {
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        return ticketRepository
+                .findAssignedTicketsForAgent(user.getId())
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse>  getOpenTicketsForAgent(String userEmail) {
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        return ticketRepository
+                .getOpenTicketsForAgent(user.getId())
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse>  getClosedTicketsForAgent(String userEmail) {
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        return ticketRepository
+                .findClosedTicketsForAgent(user.getId())
+                .stream()
+                .map(TicketResponse::new)
+                .collect(Collectors.toList());
     }
 
 }

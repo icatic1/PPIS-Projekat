@@ -7,9 +7,9 @@ import { useState } from "react";
 import CreateTicket from "./components/user/ticket-create/CreateTicket";
 import TicketOverview from "./components/shared/ticket-overview/TicketOverview";
 import NotFound from "./components/shared/NotFound";
-import TicketList from "./components/user/ticket-list/TicketList";
 import ManualCreateEdit from "./components/agent/manual-edit/ManualCreateEdit";
 import ManualOverview from "./components/shared/manual-overview/ManualOverview";
+import TicketList from "./components/shared/ticketlist";
 
 function App() {
   return (

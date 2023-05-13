@@ -18,6 +18,7 @@ import service.desk.airport.servicedesk.service.TicketService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path="/ticket")
@@ -95,6 +96,29 @@ public class TicketController {
     ) {
         var userEmail = jwtService.extractUsername(token.substring(7));
         return ResponseEntity.ok(ticketService.getOtherTicketsForUser(userEmail));
+    }
+    @GetMapping("/agentassigned")
+    public ResponseEntity<List<TicketResponse>> getAssignedTicketsForAgent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        return ResponseEntity.ok(ticketService.getAssignedTicketsForAgent(userEmail));
+    }
+
+    @GetMapping("/agentopen")
+    public ResponseEntity<List<TicketResponse>> getOpenTicketsForAgent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        return ResponseEntity.ok(ticketService.getOpenTicketsForAgent(userEmail));
+    }
+
+    @GetMapping("/agentclosed")
+    public ResponseEntity<List<TicketResponse>> getClosedTicketsForAgent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        return ResponseEntity.ok(ticketService.getClosedTicketsForAgent(userEmail));
     }
 
     @PreAuthorize("hasRole('sd_agent')")
@@ -257,4 +281,8 @@ public class TicketController {
             return new ResponseEntity<TicketResponse>((TicketResponse) null, HttpStatusCode.valueOf(404));
         }
     }
+
+
+
+
 }
