@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import service.desk.airport.servicedesk.dao.TicketRepository;
 import service.desk.airport.servicedesk.dto.other.idArray;
+import service.desk.airport.servicedesk.dto.ticket.FilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketFilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
@@ -281,6 +282,17 @@ public class TicketController {
             return new ResponseEntity<TicketResponse>((TicketResponse) null, HttpStatusCode.valueOf(404));
         }
     }
+
+    @PostMapping("/agentfilter")
+    public ResponseEntity<List<TicketResponse>> getFilteredAssignedTicketsForAgent(
+            @RequestBody FilterRequest request,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        var userEmail = jwtService.extractUsername(token.substring(7));
+        request.setUserEmail(userEmail);
+        return ResponseEntity.ok(ticketService.getFilteredTickets(request));
+    }
+
 
 
 

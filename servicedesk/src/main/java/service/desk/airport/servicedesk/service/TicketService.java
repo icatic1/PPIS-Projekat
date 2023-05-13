@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import service.desk.airport.servicedesk.dao.TicketRepository;
+import service.desk.airport.servicedesk.dto.ticket.FilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketCreateRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketFilterRequest;
 import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
@@ -216,6 +217,43 @@ public class TicketService {
                 .stream()
                 .map(TicketResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse> getFilteredTickets(FilterRequest filterRequest) {
+        List<TicketResponse> tickets;
+        var user = userRepository.findByEmail(filterRequest.getUserEmail()).orElseThrow();
+
+        if (filterRequest.getTicketType().equals("assigned")){
+            tickets = ticketRepository
+                    .findAssignedTicketsForAgent(user.getId())
+                    .stream()
+                    .map(TicketResponse::new)
+                    .collect(Collectors.toList());
+        }
+        else if (filterRequest.getTicketType().equals("open")){
+            tickets = ticketRepository
+                    .getOpenTicketsForAgent(user.getId())
+                    .stream()
+                    .map(TicketResponse::new)
+                    .collect(Collectors.toList());
+        }
+        else {
+            tickets = ticketRepository
+                    .findClosedTicketsForAgent(user.getId())
+                    .stream()
+                    .map(TicketResponse::new)
+                    .collect(Collectors.toList());
+        }
+
+
+        if( filterRequest.getCategory() != null){
+            tickets = tickets.stream().filter(ticket -> ticket.getCategory().equals(filterRequest.getCategory())).toList();
+        }
+        if( filterRequest.getPriorityLevel() != null){
+            tickets = tickets.stream().filter(ticket -> ticket.getPriorityLevel().equals(filterRequest.getPriorityLevel())).toList();
+        }
+
+        return tickets;
     }
 
 }
