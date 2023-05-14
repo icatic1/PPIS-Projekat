@@ -13,8 +13,11 @@ import Ticket from "./Ticket";
 import Backdrop from "@mui/material/Backdrop";
 import InfoIcon from "@mui/icons-material/Info";
 import CircularProgress from "@mui/material/CircularProgress";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {
   Grid,
+  IconButton,
   Typography,
   Button,
   TextField,
@@ -25,6 +28,7 @@ import {
   FormLabel,
   Tooltip,
 } from "@mui/material";
+import { right } from "@popperjs/core";
 
 function TicketList() {
   const [assignedTickets, setAssignedTickets] = useState();
@@ -34,8 +38,9 @@ function TicketList() {
   const [categoryError, setCategoryError] = useState(false);
   const [priorityError, setPriorityError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [sortData, setSortData] = useState({icon:<ArrowUpwardIcon />, up:true});
 
-  const [filterData, setFilterData] = useState({ priorityLevel: null, category:null, ticketType:null, userEmail:null});
+  const [filterData, setFilterData] = useState({ priorityLevel: null, category:null, ticketType:null, userEmail:null, sorting:"descending"});
 
   const [valueTab, setValueTab] = React.useState("1");
   const [backgroundColorTab, setBackgroundColorTab] = useState([
@@ -47,12 +52,12 @@ function TicketList() {
   const classes = useStyles();
 
   const handleFilter = (event) => {
+    
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
     });
-    console.log(valueTab);
-
+    
     switch(valueTab){
       case "1":
         filterData.ticketType = "assigned"
@@ -74,17 +79,32 @@ function TicketList() {
         setPriorityError(false);
         filterData.priorityLevel = event.target.value
         break;
+        case "sorting":
+          console.log("sortchange");
+
+          if(sortData.up === true){
+            sortData.icon = <ArrowDownwardIcon />
+            sortData.up = false
+            filterData.sorting = "descending"
+          }
+          else{
+            sortData.icon = <ArrowUpwardIcon />
+            sortData.up = true
+            filterData.sorting = "ascending"
+          }
+            
+        break;
     }
-    console.log(filterData);
 
     if(filterData.ticketType != null){
-      console.log("Poslano je");
       api.post("/ticket/agentfilter",filterData).then((res) => {
         setAssignedTickets(res.data);
       });
     }
     
   };
+
+
 
   const handleChange = (event, newValue) => {
     const newBackgroundColor = backgroundColorTab.map((c, i) => {
@@ -229,7 +249,6 @@ function TicketList() {
                       name="priorityLevel"
                       value={formData.priorityLevel ? formData.priorityLevel : ""}
                       onChange={(event) => {
-                        console.log("promjena se desila");
                         handleFilter(event);
                       }}
                       error={priorityError}
@@ -240,6 +259,11 @@ function TicketList() {
                       <MenuItem value={"URGENT"}>Urgentni</MenuItem>
                     </Select>
                   </FormControl>
+                  
+                  <Button name="sorting" value={filterData.sorting} variant="sort" startIcon={sortData.icon} style={{ float:right, marginTop: 30, marginRight: 70 }} onClick={handleFilter}>
+                    Datum
+                  </Button>
+                  
                 </div>
                 
               </Grid>

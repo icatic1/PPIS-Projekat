@@ -9,12 +9,14 @@ public class FilterRequest {
     private String ticketType;
     private Category category = null;
     private PriorityLevel priorityLevel = null;
+    private String sorting = "descending";
 
-    public FilterRequest(String userEmail, String ticketType, Category category, PriorityLevel priorityLevel) {
+    public FilterRequest(String userEmail, String ticketType, Category category, PriorityLevel priorityLevel, String sorting) {
         this.userEmail = userEmail;
         this.ticketType = ticketType;
         this.category = category;
         this.priorityLevel = priorityLevel;
+        this.sorting = sorting;
     }
 
     public String getUserEmail() {
@@ -47,5 +49,13 @@ public class FilterRequest {
 
     public void setPriorityLevel(PriorityLevel priorityLevel) {
         this.priorityLevel = priorityLevel;
+    }
+
+    public String getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(String sorting) {
+        this.sorting = sorting;
     }
 }
