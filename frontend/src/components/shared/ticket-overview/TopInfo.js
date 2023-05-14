@@ -5,14 +5,15 @@ import {i18n} from 'dateformat';
 import dateFormat from 'dateformat';
 import Options from './Options';
 import RelatedTickets from './RelatedTickets';
+import RelatedTicketsBind from '../../agent/home/RelatedTicketModals';
 import api from "../../../util/api"
 import userEvent from '@testing-library/user-event';
 import authService from '../../../util/auth.service';
 
-
 function TopInfo({ticket,setTicket,setTicketComments,ticketComments}) {
 
   const [open,setOpen] = useState(false)
+  const [openBind,setOpenBind] = useState(false)
   const [relatedTickets,setRelatedTickets] = useState([])
 
     const priority = () => {

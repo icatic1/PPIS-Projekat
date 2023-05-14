@@ -14,6 +14,7 @@ import Description from "./Description";
 import History from "./History";
 import authService from "../../../util/auth.service";
 import UnauthorizedAccess from "../UnauthorizedAccess"
+import RelatedTicketsBind from '../../agent/home/RelatedTicketModals';
 
 i18n.dayNames = [
   "Ned",

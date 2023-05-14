@@ -11,6 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import TicketCard from "../../user/ticket-list/TicketCard";
 import Ticket from "../../user/ticket-list/Ticket";
+import RelatedTicketsBind from '../../agent/home/RelatedTicketModals';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {

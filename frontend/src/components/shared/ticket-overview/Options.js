@@ -8,6 +8,7 @@ import api from "../../../util/api";
 import authService from "../../../util/auth.service";
 import TicketForwardModal from "../../agent/ticket-forward/TicketForwardModal";
 import CloseModal from "./CloseModal";
+import RelatedTicketsBind from '../../agent/home/RelatedTicketModals';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -22,6 +23,7 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
   const [alertMessage, setAlertMessage] = useState("");
 
   const [open, setOpen] = useState(false);
+  const [openBind, setOpenBind] = useState(false);
   const [openReportDialog,setOpenReportDialog] = useState(false);
 
   const handleVerify = () => {
@@ -67,6 +69,10 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
 
   const handleModalForward = () => {
     setOpen(true);
+  };
+
+  const handleModalBackward = () => {
+    setOpenBind(true);
   };
 
   const handleCloseTicket = () => {
@@ -194,6 +200,7 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
                 color: "white",
                 height: "30px",
               }}
+              onClick={handleModalBackward}
             >
               Poveži zahtjeve
             </Button>
@@ -222,6 +229,7 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
             setOpen={setOpen}
             ticketid={ticket.id}
           ></TicketForwardModal>
+          <RelatedTicketsBind open={openBind} setOpen={setOpenBind} currId={ticket.id}></RelatedTicketsBind>
     </div>
     )
   }
