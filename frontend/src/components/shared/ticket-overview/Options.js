@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../util/api";
 import authService from "../../../util/auth.service";
 import TicketForwardModal from "../../agent/ticket-forward/TicketForwardModal";
+import CloseModal from "./CloseModal";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -21,6 +22,7 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
   const [alertMessage, setAlertMessage] = useState("");
 
   const [open, setOpen] = useState(false);
+  const [openReportDialog,setOpenReportDialog] = useState(false);
 
   const handleVerify = () => {
     api.post("/ticket/verify/" + ticket.id).then((res) => {
@@ -73,13 +75,15 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
       api.post("/ticket-comment/create",{ticketId:ticket.id,comment:"Zatvoren zahtjev"}).then((res)=> {
         if(res.status==200)
           setTicketComments([res.data,...ticketComments])
+          
         })
       setAlertMessage("Uspješno ste zatvorili zahtjev!");
       setSeverity("success")
       setAlert(true);
-      
       setTicket({...ticket,status:"CLOSED"})
+      setOpenReportDialog(true)
     } 
+    
   })
   };
 
@@ -224,6 +228,7 @@ function Options({ ticket,setTicket,setTicketComments,ticketComments}) {
 
   return (
     <>
+    <CloseModal open={openReportDialog} setOpen={setOpenReportDialog} ticket={ticket}></CloseModal>
       <Snackbar
         open={alert}
         autoHideDuration={6000}

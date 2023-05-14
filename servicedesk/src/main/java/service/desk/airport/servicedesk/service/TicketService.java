@@ -252,6 +252,10 @@ public class TicketService {
         if( filterRequest.getPriorityLevel() != null){
             tickets = tickets.stream().filter(ticket -> ticket.getPriorityLevel().equals(filterRequest.getPriorityLevel())).toList();
         }
+        tickets.sort(Comparator.comparing(TicketResponse::getDate));
+        if(filterRequest.getSorting().equals("descending")){
+            Collections.reverse(tickets);
+        }
 
         return tickets;
     }

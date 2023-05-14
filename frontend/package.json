@@ -12,6 +12,7 @@
     "@mui/lab": "^5.0.0-alpha.129",
     "@mui/material": "^5.12.3",
     "@mui/styles": "^5.12.3",
+    "@mui/x-date-pickers": "^6.4.0",
     "@react-navigation/native-stack": "^6.9.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

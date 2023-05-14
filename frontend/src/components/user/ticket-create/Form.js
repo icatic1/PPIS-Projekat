@@ -91,19 +91,23 @@ const Form = () => {
   };
 
   const handleSubmit = () => {
+    let err = false
     if (formData.category == undefined) {
       setCategoryError(true);
+      err=true
     }
 
     if (formData.title == undefined) {
       setTitleError(true);
+      err=true
     }
 
     if (formData.description == undefined) {
       setDescriptionError(true);
+      err=true
     }
 
-    if (descriptionError || titleError || categoryError) {
+    if (err) {
       setToast({ ...toast, open: true });
       return;
     }

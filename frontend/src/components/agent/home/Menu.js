@@ -29,7 +29,7 @@ function Menu() {
     <Link
      to="/ticket-list"
      style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}
-     >Irvin pisao</Link>
+     >Pregled zahtjeva</Link>
     </div>
     <div>
     <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}}>

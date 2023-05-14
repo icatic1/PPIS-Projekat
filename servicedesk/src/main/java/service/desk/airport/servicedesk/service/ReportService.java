@@ -39,8 +39,8 @@ public class ReportService {
         report.setBusinessImpact(request.getBusinessImpact());
         report.setCorrectiveActions(request.getCorrectiveActions());
         report.setDateTimeRequested(request.getDateTimeRequested());
-        report.setDuration(report.getDuration());
-        report.setDepartment(report.getDepartment());
+        report.setDuration(request.getDuration());
+        report.setDepartment(request.getDepartment());
         report.setPriorityLevel(priorityLevel);
         report.setRaisedBy(raisedBy);
         report.setResolvedBy(resolvedBy);
