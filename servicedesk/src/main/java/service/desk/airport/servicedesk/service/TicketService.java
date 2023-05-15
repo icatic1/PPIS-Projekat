@@ -192,6 +192,20 @@ public class TicketService {
         return  new TicketResponse(ticket);
     }
 
+    public TicketResponse assignTicketToUserWithDeparment(Integer ticketId, Integer departmentId){
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        if(ticket.getStatus().equals(TicketStatus.CLOSED) || ticket.getStatus().equals(TicketStatus.VERIFIED))
+            return null;
+        ticket.setStatus(TicketStatus.ASSIGNED);
+
+        var user = userRepository.findUserInSpecificDepartment(departmentId);
+
+
+        ticket.setAssignedTo(user);
+        ticketRepository.save(ticket);
+        return  new TicketResponse(ticket);
+    }
+
     public List<TicketResponse>  getAssignedTicketsForAgent(String userEmail) {
         var user = userRepository.findByEmail(userEmail).orElseThrow();
         return ticketRepository

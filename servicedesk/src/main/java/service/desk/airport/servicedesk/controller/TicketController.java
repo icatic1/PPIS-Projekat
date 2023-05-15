@@ -196,6 +196,7 @@ public class TicketController {
             @RequestBody TicketFilterRequest request,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
+            System.out.println("blb");
             return ResponseEntity.ok(ticketService.filteredSortedTickets(request));
         } catch (Exception e) {
             return new ResponseEntity<List<TicketResponse>>(HttpStatus.BAD_REQUEST);
@@ -276,6 +277,23 @@ public class TicketController {
             if(res==null)
                 return new ResponseEntity<TicketResponse>((TicketResponse) null, HttpStatusCode.valueOf(400));
 
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            //User or ticket with those ids weren't found
+            return new ResponseEntity<TicketResponse>((TicketResponse) null, HttpStatusCode.valueOf(404));
+        }
+    }
+
+    @PreAuthorize("hasRole('sd_agent')")
+    @PostMapping("/assign/department/{ticket_id}/{department_id}")
+    public ResponseEntity<TicketResponse> assignTicketToUserWithDeparment(@PathVariable Integer ticket_id, @PathVariable Integer department_id) {
+        try {
+            var res = ticketService.assignTicketToUserWithDeparment(ticket_id, department_id);
+            //Ticket is already VERIFIED or CLOSED
+            if(res==null)
+                return new ResponseEntity<TicketResponse>((TicketResponse) null, HttpStatusCode.valueOf(400));
+            else if(res.getAssignedTo() == null)
+                return new ResponseEntity<TicketResponse>((TicketResponse) null, HttpStatusCode.valueOf(404));
             return ResponseEntity.ok(res);
         } catch (Exception e) {
             //User or ticket with those ids weren't found
