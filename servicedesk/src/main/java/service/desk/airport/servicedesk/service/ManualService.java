@@ -1,15 +1,21 @@
 package service.desk.airport.servicedesk.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.desk.airport.servicedesk.dao.ManualRepository;
 import service.desk.airport.servicedesk.dto.manual.ManualCreateRequest;
 import service.desk.airport.servicedesk.dto.manual.ManualResponse;
+import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
 import service.desk.airport.servicedesk.entity.Manual;
+import service.desk.airport.servicedesk.entity.Ticket;
 import service.desk.airport.servicedesk.enums.Category;
+import service.desk.airport.servicedesk.enums.TicketStatus;
 import service.desk.airport.servicedesk.security.dao.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ManualService {
@@ -63,5 +69,17 @@ public class ManualService {
 
     public ManualResponse getManual(Integer id) {
         return new ManualResponse(manualRepository.findById(id).orElseThrow());
+    }
+
+    public String deleteManual( Integer manualId) {
+        manualRepository.deleteById(manualId);
+        return "Manual ID:"+ manualId + " successfully deleted";
+    }
+
+    public List<ManualResponse> getAllManuals() {
+        return manualRepository.findAll()
+                .stream()
+                .map(ManualResponse::new)
+                .collect(Collectors.toList());
     }
 }

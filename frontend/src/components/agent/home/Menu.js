@@ -14,6 +14,10 @@ function Menu() {
     navigate("/ticket-list");
     //console.log("nesto")
   };
+  const showManual = () => {
+    navigate("/manual?id=3");
+    //console.log("nesto")
+  };
 
   return (
     <div style={{marginLeft:"30px",width:"60%",marginTop:"17%",position:"absolute",backgroundColor:"inherit"}}>
@@ -38,10 +42,10 @@ function Menu() {
     <Link style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Forum</Link>
     </div>
     <div>
-    <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}}>
+    <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}} onClick={() => showManual()}>
       <LiveHelpIcon style={{color:"#00101F"}}/>
     </IconButton>
-    <Link style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Pomoć</Link>
+    <Link to="/manual/3" style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Pomoć</Link>
     </div>
     </Stack>
     </div>

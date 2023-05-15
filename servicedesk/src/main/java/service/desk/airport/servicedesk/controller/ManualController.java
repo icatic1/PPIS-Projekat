@@ -7,8 +7,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import service.desk.airport.servicedesk.dto.manual.ManualCreateRequest;
 import service.desk.airport.servicedesk.dto.manual.ManualResponse;
+import service.desk.airport.servicedesk.dto.ticket.TicketResponse;
 import service.desk.airport.servicedesk.security.service.JwtService;
 import service.desk.airport.servicedesk.service.ManualService;
+
+import java.util.List;
 
 
 @RestController
@@ -42,6 +45,20 @@ public class ManualController {
     public ResponseEntity<ManualResponse> getManual(@PathVariable("id") Integer id) {
 
         return ResponseEntity.ok(manualService.getManual(id));
+    }
+
+    @PreAuthorize("hasRole('sd_agent')")
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<String> deleteManual(
+            @PathVariable("id") Integer ticketId) {
+
+        return ResponseEntity.ok(manualService.deleteManual(ticketId));
+
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ManualResponse>> getAllManuals() {
+        return ResponseEntity.ok(manualService.getAllManuals());
     }
 
 }
