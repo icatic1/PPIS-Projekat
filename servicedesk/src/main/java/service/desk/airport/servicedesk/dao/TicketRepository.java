@@ -37,7 +37,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     @Query("SELECT t from Ticket t WHERE t.status=0 AND t.priorityLevel=3")
     public List<Ticket> findUrgentUnassignedTickets();
 
-    @Query("SELECT t FROM Ticket t WHERE t.assignedTo.id=null AND t.status!=2 ORDER BY t.date DESC")
+    @Query("SELECT t FROM Ticket t WHERE t.assignedTo.id=null AND t.status=1")
     public List<Ticket> getOpenTicketsForAgent(Integer userId);
 
     @Query("SELECT t FROM Ticket t WHERE t.assignedTo.id=:userId AND (t.status=2 )")
