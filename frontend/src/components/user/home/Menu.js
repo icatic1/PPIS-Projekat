@@ -125,6 +125,7 @@ function Menu() {
             <LiveHelpIcon style={{ color: "#00101F" }} />
           </IconButton>
           <Link
+            to="/manual-list"
             style={{
               paddingLeft: 20,
               fontFamily: "Yantramanav",

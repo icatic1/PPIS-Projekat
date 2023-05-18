@@ -15,7 +15,7 @@ function Menu() {
     //console.log("nesto")
   };
   const showManual = () => {
-    navigate("/manual?id=3");
+    navigate("/manual-list");
     //console.log("nesto")
   };
 
@@ -45,7 +45,7 @@ function Menu() {
     <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}} onClick={() => showManual()}>
       <LiveHelpIcon style={{color:"#00101F"}}/>
     </IconButton>
-    <Link to="/manual/3" style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Pomoć</Link>
+    <Link to="/manual-list" style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Pomoć</Link>
     </div>
     </Stack>
     </div>

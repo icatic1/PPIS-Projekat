@@ -13,6 +13,7 @@ import TicketList from "./components/shared/ticketlist";
 import ReportCreate from "./components/agent/report-create/ReportCreate";
 import ReportOverview from "./components/agent/report-overview/ReportOverview";
 import ReportList from "./components/agent/report-list/ReportList";
+import ManualList from "./components/agent/manual-list/ManualList";
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
           <Route
             path="/manual"
             element={<ManualOverview></ManualOverview>}
+          ></Route>
+          <Route
+            path="/manual-list"
+            element={<ManualList></ManualList>}
           ></Route>
            <Route
             path="/report/create"
