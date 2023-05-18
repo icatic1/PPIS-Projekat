@@ -12,6 +12,7 @@ import ManualOverview from "./components/shared/manual-overview/ManualOverview";
 import TicketList from "./components/shared/ticketlist";
 import ReportCreate from "./components/agent/report-create/ReportCreate";
 import ReportOverview from "./components/agent/report-overview/ReportOverview";
+import ReportList from "./components/agent/report-list/ReportList";
 
 function App() {
   return (
@@ -50,6 +51,10 @@ function App() {
           <Route
             path="/report"
             element={<ReportOverview></ReportOverview>}
+          ></Route>
+           <Route
+            path="/report/all"
+            element={<ReportList></ReportList>}
           ></Route>
         </Route>
         <Route path="/login" element={<Login></Login>} />
