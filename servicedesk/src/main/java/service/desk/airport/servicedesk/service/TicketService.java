@@ -46,8 +46,9 @@ public class TicketService {
         var date = LocalDateTime.now();
 
         var ticket = new Ticket(code,request.getTitle(),request.getDescription(),status,priority,category,tag,date,user);
-        ticketRepository.save(ticket);
-
+        ticket = ticketRepository.save(ticket);
+        ticket.setCode("T-" + request.getTag().charAt(0) + "-" + ticket.getId());
+        ticket = ticketRepository.save(ticket);
         return new TicketResponse(ticket);
     }
 

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
+import TopicIcon from '@mui/icons-material/Topic';
 
 function Menu() {
   const navigate = useNavigate();
@@ -17,6 +18,10 @@ function Menu() {
   const showManual = () => {
     navigate("/manual-list");
     //console.log("nesto")
+  };
+
+  const showReportList = () => {
+    navigate("/report-list");
   };
 
   return (
@@ -46,6 +51,12 @@ function Menu() {
       <LiveHelpIcon style={{color:"#00101F"}}/>
     </IconButton>
     <Link to="/manual-list" style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Pomoć</Link>
+    </div>
+    <div>
+    <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}} onClick={() => showReportList()}>
+      <TopicIcon style={{color:"#00101F"}}/>
+    </IconButton>
+    <Link to="/report-list" style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Izvještaji</Link>
     </div>
     </Stack>
     </div>

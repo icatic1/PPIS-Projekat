@@ -58,7 +58,7 @@ function App() {
             element={<ReportOverview></ReportOverview>}
           ></Route>
            <Route
-            path="/report/all"
+            path="/report-list"
             element={<ReportList></ReportList>}
           ></Route>
         </Route>
