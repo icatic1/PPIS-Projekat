@@ -12,6 +12,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 
 function ManualList() {
     const user = authService.getCurrentUser();
@@ -171,9 +172,32 @@ function ManualList() {
                                         fontFamily: "Yantramanav",
                                         padding: 5,
                                         paddingLeft: 10
+                                        ,marginBottom: 5
                                     }}
                                 >Priručnici</h2>
                             </Box>
+                            {user.role == "sd_user" ? <></> :
+                            <>
+                            <Box sx={{ display:"flex",
+                                        justifyContent:"flex-end",
+                                        alignItems:"flex-end"}}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    
+                                    size="medium"
+                                    style={{margin: 5, marginBottom:10, marginRight:10, backgroundColor:"#00101F", fontFamily: "Yantramanav"}}
+                                    onClick={(event) => {
+                                        navigate("/manual/create");
+                                    }}
+                                    startIcon={<AddIcon />}
+                                >
+                                    Dodaj
+                                </Button>
+                            </Box>
+                                
+                            </>
+                            }
                             <DataGrid
                                 sx={{
                                     // disable cell selection style
