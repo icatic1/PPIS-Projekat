@@ -24,6 +24,10 @@ function Menu() {
     navigate("/report-list");
   };
 
+  const showForumList = () => {
+    navigate("/forum-list");
+  };
+
   return (
     <div style={{marginLeft:"30px",width:"60%",marginTop:"17%",position:"absolute",backgroundColor:"inherit"}}>
     <Stack direction="column"
@@ -41,10 +45,10 @@ function Menu() {
      >Pregled zahtjeva</Link>
     </div>
     <div>
-    <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}}>
+    <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}} onClick={() => showForumList()}>
       <ForumIcon style={{color:"#00101F"}}/>
     </IconButton>
-    <Link style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Forum</Link>
+    <Link to="/forum-list" style={{paddingLeft:20,fontFamily:"Yantramanav",fontSize:"100%",color:"#00101F",textDecoration:"none" }}>Forum</Link>
     </div>
     <div>
     <IconButton size='large' sx={{ boxShadow: 5 }} style={{backgroundColor:"white"}} onClick={() => showManual()}>
