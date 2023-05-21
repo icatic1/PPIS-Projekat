@@ -213,107 +213,107 @@ function ForumPostList() {
               </Alert>
             </Snackbar>
 
-          
-          {forumPosts ?
-          <>
-            <div >
 
-              <Description description={forumPosts[forumPosts.length - 1].content} />
-              <hr
-                style={{ backgroundColor: "#00101f", width: "95%" }}
-              ></hr>
-            </div>
-            <Container
-              style={{
-                width: "95%",
-                backgroundColor: "#00101f",
-                padding: 20,
-              }}
-            >
-              {commentPage.map((tc) => (
-                <Paper
-                  key={tc.id}
+            {forumPosts ?
+              <>
+                <div >
+
+                  <Description description={forumPosts[forumPosts.length - 1].content} />
+                  <hr
+                    style={{ backgroundColor: "#00101f", width: "95%" }}
+                  ></hr>
+                </div>
+                <Container
                   style={{
-                    padding: 15,
-                    marginBottom: 20,
-                    height: "auto",
-                    backgroundColor: "white",
-                    fontFamily: "Yantramanav",
-                    overflow: "hidden",
+                    width: "95%",
+                    backgroundColor: "#00101f",
+                    padding: 20,
                   }}
                 >
-                  <span style={{ fontWeight: "bold", float: "right" }}>
-                    {dateFormat(tc.dateTime, "dd/mm/yyyy, HH:MM")}
-                  </span>
-                  <span style={{ clear: "both", float: "left" }}>{tc.content}</span>
-                  <span style={{ fontWeight: "bold", clear: "both", float: "right" }}>
-                    {tc.createdBy.firstname} {tc.createdBy.lastname}
-                  </span>
-                </Paper>
-              ))}
-              {forumPosts.length > 0 ? (
-                <Stack spacing={2}>
-                  <div style={{ justifyContent: "center", display: "flex" }}>
-                    <Pagination
-                      classes={{ ul: classes.ul }}
-                      color="primary"
-                      onChange={handleChange}
-                      page={page}
-                      count={numOfPages}
-                      renderItem={(item) => (
-                        <PaginationItem
-                          slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                          {...item}
-                        />
-                      )}
-                    />
-                  </div>
-                </Stack>
-              ) : (
-                <></>
-              )}
-              {(status) ?
-                <>
-                  <hr></hr>
-                  <FormControl required style={{ width: "100%" }}>
-                    <Textarea
-                      required
-                      placeholder="Unesite komentar"
-                      value={comment ? comment : ""}
-                      name="comment"
-                      onChange={(event) => {
-                        handleCommentChange(event);
-                      }}
-                      minRows={5}
-                      style={{ width: "100%" }}
-                    />
-                    <Button
+                  {commentPage.map((tc) => (
+                    <Paper
+                      key={tc.id}
                       style={{
-                        backgroundColor: "#1769aa",
-                        marginLeft: "90%",
-                        marginTop: 10,
-                        padding: "5px 20px 5px 20px",
-                        textTransform: "none",
+                        padding: 15,
+                        marginBottom: 20,
+                        height: "auto",
+                        backgroundColor: "white",
                         fontFamily: "Yantramanav",
-                        fontWight: "500",
-                        fontSize: "18px",
-                        color: "white",
+                        overflow: "hidden",
                       }}
-                      onClick={sendComment}
                     >
-                      Dodaj
-                    </Button>
-                  </FormControl>
-                </>
-                : <></>}
-            </Container>
-            </> : <Backdrop
-            sx={{
-              color: "#fff",
-              zIndex: (theme) => theme.zIndex.drawer + 1,
-            }}
-            open={true}
-          /> }
+                      <span style={{ fontWeight: "bold", float: "right" }}>
+                        {dateFormat(tc.dateTime, "dd/mm/yyyy, HH:MM")}
+                      </span>
+                      <span style={{ clear: "both", float: "left" }}>{tc.content}</span>
+                      <span style={{ fontWeight: "bold", clear: "both", float: "right" }}>
+                        {tc.createdBy.firstname} {tc.createdBy.lastname}
+                      </span>
+                    </Paper>
+                  ))}
+                  {forumPosts.length > 0 ? (
+                    <Stack spacing={2}>
+                      <div style={{ justifyContent: "center", display: "flex" }}>
+                        <Pagination
+                          classes={{ ul: classes.ul }}
+                          color="primary"
+                          onChange={handleChange}
+                          page={page}
+                          count={numOfPages}
+                          renderItem={(item) => (
+                            <PaginationItem
+                              slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                              {...item}
+                            />
+                          )}
+                        />
+                      </div>
+                    </Stack>
+                  ) : (
+                    <></>
+                  )}
+                  {(status) ?
+                    <>
+                      <hr></hr>
+                      <FormControl required style={{ width: "100%" }}>
+                        <Textarea
+                          required
+                          placeholder="Unesite komentar"
+                          value={comment ? comment : ""}
+                          name="comment"
+                          onChange={(event) => {
+                            handleCommentChange(event);
+                          }}
+                          minRows={5}
+                          style={{ width: "100%" }}
+                        />
+                        <Button
+                          style={{
+                            backgroundColor: "#1769aa",
+                            marginLeft: "90%",
+                            marginTop: 10,
+                            padding: "5px 20px 5px 20px",
+                            textTransform: "none",
+                            fontFamily: "Yantramanav",
+                            fontWight: "500",
+                            fontSize: "18px",
+                            color: "white",
+                          }}
+                          onClick={sendComment}
+                        >
+                          Dodaj
+                        </Button>
+                      </FormControl>
+                    </>
+                    : <></>}
+                </Container>
+              </> : <Backdrop
+                sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={true}
+              />}
           </>
           : <Backdrop
             sx={{
