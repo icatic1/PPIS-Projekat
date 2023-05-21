@@ -155,8 +155,11 @@ function ForumPostList() {
   return (
     <>
       <Header></Header>
+      <div style={{ width: "90%", alignSelf:"center" , margin: "auto" }}>
 
-      <div style={{ marginLeft: "5%", marginTop: "30px" }}>
+      
+
+      <div style={{ width: "100%", alignSelf:"center" , padding: 0,margin: "auto", marginTop:"30px" }}>
         <Stack spacing={2}>
           <Breadcrumbs
             separator={<NavigateNextIcon style={{ color: "#00101f" }} fontSize="small" />}
@@ -167,11 +170,11 @@ function ForumPostList() {
         </Stack>
       </div>
       <Container
-        style={{ backgroundColor: "#F5F5F5", width: "90%", padding: 0, height: "500px" }}
+        style={{ backgroundColor: "#F5F5F5", width: "100%", padding: 0, height: "fit-content",margin: "auto", marginTop:10 }}
       >
         {forumTopic ?
           <>
-            <Box sx={{ width: "100%", backgroundColor: "#00101F", display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ width: "100%", backgroundColor: "#00101F", display: "flex", justifyContent: "space-between"}}>
               <h2
                 style={{
                   color: "white",
@@ -325,8 +328,10 @@ function ForumPostList() {
             <CircularProgress color="inherit" />
           </Backdrop>}
       </Container>
+      </div>
     </>
   );
+  
 }
 
 export default ForumPostList;
