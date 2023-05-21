@@ -284,6 +284,7 @@ function TicketList() {
                     }}
                     error={categoryError}
                   >
+
                     <MenuItem value={"INCIDENT"}>Incident</MenuItem>
                     <MenuItem value={"REQUEST"}>Zahtjev za uslugom</MenuItem>
                   </Select>
@@ -311,6 +312,7 @@ function TicketList() {
                     }}
                     error={categoryError}
                   >
+                    <MenuItem value={null}>Sve</MenuItem>
                     <MenuItem value={"HARDWARE"}>Hardver</MenuItem>
                     <MenuItem value={"SOFTWARE"}>Softver</MenuItem>
                     <MenuItem value={"NETWORK"}>Mreža</MenuItem>
@@ -336,6 +338,7 @@ function TicketList() {
                     }}
                     error={priorityError}
                   >
+                    <MenuItem value={null}>Sve</MenuItem>
                     <MenuItem value={"LOW"}>Nizak</MenuItem>
                     <MenuItem value={"MEDIUM"}>Srednji</MenuItem>
                     <MenuItem value={"HIGH"}>Visok</MenuItem>
