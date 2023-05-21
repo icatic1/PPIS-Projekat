@@ -13,6 +13,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import EditIcon from '@mui/icons-material/Edit';
 import authService from '../../../util/auth.service'
 import { left } from "@popperjs/core";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ManualOverview() {
   const location = useLocation();
@@ -56,7 +57,7 @@ function ManualOverview() {
       {idInvalid ? <NotFound></NotFound>
         : manual ?
           <>
-            <div style={{ marginLeft: "5%", marginTop: "30px", float:left }}>
+            <div style={{ marginLeft: "5%", marginTop: "30px", float: left }}>
               <Stack spacing={2}>
                 <Breadcrumbs
                   separator={<NavigateNextIcon style={{ color: "#00101f" }} fontSize="small" />}
@@ -66,36 +67,51 @@ function ManualOverview() {
                 </Breadcrumbs>
               </Stack>
             </div>
-            {user.role == "sd_user" ? <></> :
-                            <>
-                            <Box sx={{ display:"flex",
-                                        justifyContent:"flex-end",
-                                        alignItems:"flex-end",
-                                        marginRight:20
-                                        }}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    
-                                    size="medium"
-                                    style={{margin: 10,marginBottom:5,marginRight:20, backgroundColor:"#00101F", fontFamily: "Yantramanav"}}
-                                    onClick={(event) => {
-                                      navigate("/manual/edit?id=" + id)
-                                    }}
-                                    startIcon={<EditIcon />}
-                                >
-                                    Uredi
-                                </Button>
-                            </Box>
-                                
-                            </>
-                            }
+
             <Container
               sx={{ mt: 2 }}
-              style={{ backgroundColor: "#F5F5F5", padding: 10, width: "90%", fontFamily: "Yantramanav", clear:left }}>
+              style={{ backgroundColor: "#F5F5F5", padding: 10, width: "90%", fontFamily: "Yantramanav", clear: left }}>
+                 {user.role == "sd_user" ? <></> :
+                 <>
+                <div style={{float:"right"}}>
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    style={{ marginLeft: 5, backgroundColor: "#00101F" }}
+                    onClick={(event) => {
+                      navigate("/manual/edit?id=" + id)
+                      event.ignore = true;
+                    }}
+                    startIcon={<EditIcon />}
+                  >
+                    Uredi
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    style={{ marginLeft: 5, backgroundColor: "#c62828" }}
+                    onClick={(event) => {
+                      api.delete("/manual/delete/" + id).then((res) => {
+                        navigate("/manual-list")
+                      })
+
+
+                    }}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Izbriši
+                  </Button>
+
+                </div>
+                <br></br>
+                </>
+              }
               <div style={{ color: "#00101F", paddingLeft: 10, fontSize: "36px", fontWeight: "bold" }}>{manual.title}</div>
               <hr style={{ backgroundColor: "#00101F" }}></hr>
-              <div contentEditable='true' dangerouslySetInnerHTML={{ __html: manual.content }}></div>
+              <div contentEditable='false' dangerouslySetInnerHTML={{ __html: manual.content }}></div>
             </Container>
           </>
           :
